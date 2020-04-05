@@ -311,8 +311,7 @@ class signinPageState extends State<signinPage> {
       setState(() {
         print("signup success!!!");
 
-        writeUsername(_email);
-        writePassword(_password);
+
 
         Navigator.push(
           context,
@@ -346,7 +345,8 @@ class signinPageState extends State<signinPage> {
   @override
   void initState() {
       
-    String lUsername;
+    Future.delayed(const Duration(milliseconds: 10), () {
+      String lUsername;
     String lPassword;
 
     readUsername("username").then((String value) {
@@ -362,6 +362,8 @@ class signinPageState extends State<signinPage> {
       });
 
     });
+    });
+    
 
   }
 
