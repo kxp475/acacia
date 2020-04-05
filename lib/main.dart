@@ -3,76 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-
+import 'profile_settings.dart';
+import 'readLocalProfileData.dart';
 
 void main() => runApp(MyApp());
 
+String userEmail = "";
+
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
-
-
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    print(directory.path);
-    return directory.path;
-  }
-
-  Future<File> get _localUsernameFile async {
-    final path = await _localPath;
-    return File('$path/username.txt');
-  }
-
-
-  Future<File> get _localPasswordFile async {
-    final path = await _localPath;
-    return File('$path/password.txt');
-  }
-
-  Future<String> readUsername(String name) async {
-    try {
-     
-          final file = await _localUsernameFile;
-     
-     
-      
-      // Read the file
-      String contents = await file.readAsString();
-      // Returning the contents of the file
-      return contents;
-    } catch (e) {
-      // If encountering an error, return
-      return 'Error!';
-    }
-  }
-
-  Future<String> readPassword(String name) async {
-    try {
-     
-          final file = await _localPasswordFile;
-     
-      
-      // Read the file
-      String contents = await file.readAsString();
-      // Returning the contents of the file
-      return contents;
-    } catch (e) {
-      // If encountering an error, return
-      return 'Error!';
-    }
-  }
-
-  Future<File> writeUsername(String username) async {
-    print("writing some content");
-    final file1 = await _localUsernameFile;
-    // Write the file
-    return file1.writeAsString(username);
-  }
-
-    Future<File> writePassword(String password) async {
-    print("writing some content");
-    final file1 = await _localPasswordFile;
-    // Write the file
-    return file1.writeAsString(password);
-  }
 
 
 
@@ -92,7 +31,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.cyan,
       ),
       home: signinPage(),
     );
@@ -128,18 +67,18 @@ class loginPageState extends State<loginPage>{
     ))
         .user;
     if (user != null) {
-      setState(() {
-        print("loginSuccess!!!!!");
+         setState(() {
+         print("loginSuccess!!!!!");
          writeUsername(_email);
          writePassword(_password);
-        Navigator.push(
+         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MyHomePage()),
         );
 
       });
     } else {
-      setState((){
+        setState((){
         print("Login Failed.");
 
       });
@@ -208,7 +147,6 @@ class loginPageState extends State<loginPage>{
       ),
     );
 
-
     final paddingA = Padding(padding: EdgeInsets.only(top: 25.0));
 
     return Scaffold(
@@ -270,12 +208,6 @@ class signinPageState extends State<signinPage> {
   String _password = "";
   String data;
 
-
-
-
- 
-   
-
   void _register() async {
     final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
       email: _email,
@@ -310,9 +242,6 @@ class signinPageState extends State<signinPage> {
     if (user != null) {
       setState(() {
         print("signup success!!!");
-
-
-
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MyHomePage()),
@@ -326,11 +255,6 @@ class signinPageState extends State<signinPage> {
 
 
   void onSignupPressed(){
-   
-
-   
-    
-
     print('The user wants to login with $_email and $_password');
     _register();
   }
@@ -439,25 +363,25 @@ class signinPageState extends State<signinPage> {
           child: Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                      image: AssetImage("images/treeLogin.jpg",),
-                      fit: BoxFit.cover,
-                  ),
+                        image: AssetImage("images/treeLogin.jpg",),
+                        fit: BoxFit.cover,
+                      ),
                   ),
                   padding: const EdgeInsets.all(30.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                     
-                      Image.asset(
+                    Image.asset(
                         'images/logo.png',
                         height: 100,
                         width: 100,
                      ),
-                       new Text('Welcome to Acacia',
-                       style: new TextStyle(fontSize: 30.0,color : Colors.white),),
+                      new Text('Welcome to Acacia',
+                      style: new TextStyle(fontSize: 30.0,color : Colors.white),),
 
-                       new Text('Create an Account:', style: new TextStyle(fontSize:20,color : Colors.white)),
-                       paddingA,
+                      new Text('Create an Account:', style: new TextStyle(fontSize:20,color : Colors.white)),
+                      paddingA,
                       emailField,
                       paddingA,
                       passwordField,
@@ -497,12 +421,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+    TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
   int _counter = 0;
-  String _title = "Acacia!";
+  String _title = "Acacia";
 
   void _incrementCounter() {
     setState(() {
-      _title = "Acacia! Changed";
+      _title = "Acacia";
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
@@ -516,6 +442,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void onProfileSettingsButtonPressed(){
+    print("You've pressed the Profile Settings Button!");
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => profile_settingsPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -524,16 +458,35 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    final profileSettingsButton = Material(
+            borderRadius: BorderRadius.circular(30.0),
+            color: Colors.cyan,
+            child: MaterialButton(
+              minWidth: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+              onPressed: onProfileSettingsButtonPressed,
+              child: Text("Profile Settings",
+                  textAlign: TextAlign.center,
+                  style: style.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+            ),
+      );
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text('$_title'),
+        title: Text('$_title',style: Theme.of(context).textTheme.display1.copyWith(color: Colors.white)),
+        automaticallyImplyLeading: false,
+
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
+        child: Container(
+        padding: const EdgeInsets.all(30.0),
         child: Column(
+
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -548,16 +501,22 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
+
+          
           mainAxisAlignment: MainAxisAlignment.center,
+
           children: <Widget>[
+            profileSettingsButton,
             Text(
               'Welcome to Acacia!',
+
             ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
           ],
+        ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
