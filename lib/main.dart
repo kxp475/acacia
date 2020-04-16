@@ -5,15 +5,17 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'profile_settings.dart';
 import 'readLocalProfileData.dart';
+import 'login_page.dart';
+import 'signin_page.dart';
+import 'add_page.dart';
 
 void main() => runApp(MyApp());
 
 String userEmail = "";
+  List<String> litems = ["Water","Sleep","Exercise"];
 
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-
-
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -39,369 +41,6 @@ class MyApp extends StatelessWidget {
 }
 
 
-class loginPage extends StatefulWidget{
-  loginPage() : super(key:key);
-
-  @override
-  loginPageState createState() => loginPageState();
-}
-
-class loginPageState extends State<loginPage>{
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  String _email = "";
-  String _password = "";
-
-  void onLoginPressed(){
-    print('The user wants to login with $_email and $_password');
-    _signInWithEmailAndPassword();
-  }
-
-  void gotoSignup(){
-   Navigator.pop(context);
-  }
-
-  void _signInWithEmailAndPassword() async {
-    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-      email: _email,
-      password: _password,
-    ))
-        .user;
-    if (user != null) {
-         setState(() {
-         print("loginSuccess!!!!!");
-         writeUsername(_email);
-         writePassword(_password);
-         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MyHomePage()),
-        );
-
-      });
-    } else {
-        setState((){
-        print("Login Failed.");
-
-      });
-    }
-  }
-
-
-  @override
-  Widget build(BuildContext context){
-
-    final emailField = TextField(
-          obscureText: false,
-          style: style,
-          onChanged: (text) {
-            print("First text field: $text");
-            _email = text;
-          },
-          decoration: InputDecoration(
-              fillColor: Colors.white.withOpacity(0.9), filled: true,
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              hintText: "Email",
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-    final passwordField = TextField(
-      obscureText: true,
-      style: style,
-
-      onChanged: (text) {
-            print("First text field: $text");
-            _password = text;
-          },
-      decoration: InputDecoration(
-          fillColor: Colors.white.withOpacity(0.9), filled: true,
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
-
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-    final loginButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: onLoginPressed,
-        child: Text("Login",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
-
-    final alreadyHaveAccountText =  Text("Don't have an account?", style: new TextStyle(fontSize:15,color : Colors.white));
-    final alreadyHaveAccountButton = Material(
-      elevation: 0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.white.withOpacity(0),
-      child: MaterialButton(
-        //minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: gotoSignup,
-        child: Text('Signup', style: new TextStyle(fontSize:20,fontWeight: FontWeight.bold,color : Colors.white)),
-      ),
-    );
-
-    final paddingA = Padding(padding: EdgeInsets.only(top: 25.0));
-
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Center(
-          child: Container(
-
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                      image: AssetImage("images/mountains.jpg",),
-                      fit: BoxFit.cover,
-                  ),
-                  ),
-                  padding: const EdgeInsets.all(30.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        'images/logo.png',
-                        height: 100,
-                        width: 100,
-                     ),
-                       new Text('Welcome Back!',
-                       style: new TextStyle(fontSize: 30.0,color : Colors.black),),
-
-                       new Text('Login to your account:', style: new TextStyle(fontSize:20,color : Colors.black)),
-                       paddingA,
-                      emailField,
-                      paddingA,
-                      passwordField,
-                      paddingA,
-                      loginButton,
-                      paddingA,
-                       paddingA,
-
-                      alreadyHaveAccountText,
-                      alreadyHaveAccountButton,
-                  ],
-                  ),
-                ),
-        ),
-
-    );
-  }
-}
-
-
-class signinPage extends StatefulWidget {
-  signinPage() : super(key:key);
-
-  @override
-  signinPageState createState() => signinPageState();
-
-}
-
-class signinPageState extends State<signinPage> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  String _email = "";
-  String _password = "";
-  String data;
-
-  void _register() async {
-    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-      email: _email,
-      password: _password,
-    ))
-        .user;
-    if (user != null) {
-      setState(() {
-        print("signup success!!!");
-
-        writeUsername(_email);
-        writePassword(_password);
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MyHomePage()),
-        );
-      
-      });
-    } else {
-      print("signup failed!");
-    }
-  }
-
-  void _signingWithLocalInfo(String u, String p) async {
-    print("attempting signin");
-    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-      email: u,
-      password: p,
-    ))
-        .user;
-    if (user != null) {
-      setState(() {
-        print("signup success!!!");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MyHomePage()),
-        );
-      
-      });
-    } else {
-      print("signup failed!");
-    }
-  }
-
-
-  void onSignupPressed(){
-    print('The user wants to login with $_email and $_password');
-    _register();
-  }
-
-  void gotoLogin(){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => loginPage()),
-      );
-  }
-
-  @override
-  void initState() {
-      
-    Future.delayed(const Duration(milliseconds: 10), () {
-      String lUsername;
-    String lPassword;
-
-    readUsername("username").then((String value) {
-      setState(() {
-        lUsername = value;
-      });
-       readPassword("password").then((String value) {
-          setState(() {
-            lPassword = value;
-          });
-          print("THE LOADED USERNAME IS $lUsername , PASSWORD IS $lPassword");
-          _signingWithLocalInfo(lUsername,lPassword);
-      });
-
-    });
-    });
-    
-
-  }
-
-
-  @override
-  Widget build(BuildContext context){
-
-
-
-    final emailField = TextField(
-          obscureText: false,
-          style: style,
-          onChanged: (text) {
-            print("First text field: $text");
-            _email = text;
-          },
-          decoration: InputDecoration(
-              fillColor: Colors.white.withOpacity(0.9), filled: true,
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              hintText: "Email",
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-    final passwordField = TextField(
-      obscureText: true,
-      style: style,
-      onChanged: (text) {
-            print("First text field: $text");
-            _password = text;
-          },
-      decoration: InputDecoration(
-          fillColor: Colors.white.withOpacity(0.9), filled: true,
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
-
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-    final signupButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: onSignupPressed,
-        child: Text("Signup",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
-
-    final alreadyHaveAccountText =  Text('Already Have an Account?', style: new TextStyle(fontSize:15,color : Colors.white));
-    final alreadyHaveAccountButton = Material(
-      elevation: 0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.white.withOpacity(0),
-      child: MaterialButton(
-        //minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: gotoLogin,
-        child: Text('login', style: new TextStyle(fontSize:20,fontWeight: FontWeight.bold,color : Colors.white)),
-      ),
-    );
-
-
-    final paddingA = Padding(padding: EdgeInsets.only(top: 25.0));
-
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Center(
-          child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("images/treeLogin.jpg",),
-                        fit: BoxFit.cover,
-                      ),
-                  ),
-                  padding: const EdgeInsets.all(30.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                    
-                    Image.asset(
-                        'images/logo.png',
-                        height: 100,
-                        width: 100,
-                     ),
-                      new Text('Welcome to Acacia',
-                      style: new TextStyle(fontSize: 30.0,color : Colors.white),),
-
-                      new Text('Create an Account:', style: new TextStyle(fontSize:20,color : Colors.white)),
-                      paddingA,
-                      emailField,
-                      paddingA,
-                      passwordField,
-                      paddingA,
-                      signupButton,
-                      paddingA,
-                      paddingA,
-                      alreadyHaveAccountText,
-                      alreadyHaveAccountButton,
-                  ],
-                  ),
-                ),
-        ),
-
-    );
-  }
-}
-
-
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -421,7 +60,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-    TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   int _counter = 0;
   String _title = "Acacia";
@@ -450,6 +89,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void onAddPageButtonPressed(){
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => add_Page()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -472,11 +118,72 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
       );
 
+Future<void> _undoRemovePrompt(int index,var item) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Are you sure you want to delete $item page?'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('You will have to create another page to track $item again.'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Undo Deletion'),
+            onPressed: () {
+              Navigator.of(context).pop();
+               setState(() {
+                litems.insert(index, item);
+               });
+            },
+          ),
+          FlatButton(
+            child: Text('Confirm Deletion'),
+            onPressed: () {
+              Navigator.of(context).pop();
+               
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+  void addPage(){
+    print("Add a page");
+  }
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text('$_title',style: Theme.of(context).textTheme.display1.copyWith(color: Colors.white)),
+        actions: [GestureDetector(
+                    onTap: (){
+
+                        onAddPageButtonPressed();
+                    },
+                    child: Container(
+                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Icon(Icons.add, size: 30.0, color: Colors.white),
+                      ),
+                  ),
+                  GestureDetector(
+                    onTap: (){
+
+                        onProfileSettingsButtonPressed();
+                    },
+                    child: Container(
+                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Icon(Icons.settings, color: Colors.white),
+                      ),
+                  )],
         automaticallyImplyLeading: false,
 
       ),
@@ -484,45 +191,66 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Container(
-        padding: const EdgeInsets.all(30.0),
+        decoration: BoxDecoration(
+                      image: DecorationImage(
+                      image: AssetImage("images/treeLogin.jpg",),
+                      fit: BoxFit.cover,
+                  ),
+                  ),
+        padding: const EdgeInsets.symmetric(horizontal: 0.0),
         child: Column(
 
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-
-          
           mainAxisAlignment: MainAxisAlignment.center,
 
           children: <Widget>[
-            profileSettingsButton,
-            Text(
-              'Welcome to Acacia!',
+           
+            new Expanded(
+            child: new ListView.builder
+              (
+                itemCount: litems.length,
+                itemBuilder: (BuildContext ctxt, int Index) {
+                  //final item = litems[Index];
 
+                  return Dismissible(
+                      key: Key(litems[Index]),
+                      onDismissed: (direction) {
+                        var item = litems.elementAt(Index);
+                        setState(() {
+                          litems.removeAt(Index);
+                        });
+                        _undoRemovePrompt(Index,item);
+                      // Then show a snackbar.
+                       
+                      },
+                    child: Container(
+                        padding: const EdgeInsets.only(top: 20.0,left: 30.0,right: 30.0),
+                        child: Card(
+                          elevation: 1,
+                          child: ListTile(
+                            contentPadding: EdgeInsets.symmetric(vertical: 100.0,horizontal: 10.0) ,
+                            leading: FlutterLogo(),
+                            trailing: Icon( Icons.settings),
+                            title: Text(litems[Index]),
+                          ),
+                        ),
+                    ),
+                  );
+
+                }
+              )
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+
+            //profileSettingsButton,
+
           ],
         ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: addPage,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        icon: Icon(Icons.mode_edit,color: Colors.white),
+        label: Text("Log",style: new TextStyle(fontSize:20,color : Colors.white)),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

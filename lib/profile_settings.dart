@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'readLocalProfileData.dart';
 import 'main.dart';
+import 'signin_page.dart';
+
 
 String username = "";
 
@@ -79,7 +81,7 @@ class profile_settingsPageState extends State<profile_settingsPage>{
 			 appBar: AppBar(
         		// Here we take the value from the MyHomePage object that was created by
         		// the App.build method, and use it to set our appbar title.
-        		title: Text('Profile Settings'),
+        		title: Text('Profile Settings', style: new TextStyle(color : Colors.white)),
       		),
 			body: Center(
 				child: Container(
