@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1067457766155",
+    "firebase_url": "https://acacia-5d505.firebaseio.com",
+    "project_id": "acacia-5d505",
+    "storage_bucket": "acacia-5d505.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067457766155:android:4cdd0474aaa84dc99b780e",
+        "android_client_info": {
+          "package_name": "com.example.acacia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1067457766155-mf5di4nhe5bik1v9tnsvstfg3lnhh9al.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.acacia",
+            "certificate_hash": "866c2c5d2b567decdb24e552f8cf1d5d7b76bb3e"
+          }
+        },
+        {
+          "client_id": "1067457766155-mmbraoekblsjatfumu5jeotohqpck8qo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6l8tBIrnHHq3YRneCZGfOSCzW1VNHyZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1067457766155-mmbraoekblsjatfumu5jeotohqpck8qo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1067457766155-tm1pom1c66tcac1bbk6jqerf7emrfuuo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.acacia"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
