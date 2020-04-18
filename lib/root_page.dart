@@ -40,7 +40,7 @@ class root_PageState extends State<root_Page>{
 	void _signingWithLocalInfo(String u, String p) async {
 	    print("attempting signin");
 
-	    if(u == ""){
+	    if(u == "" || u == null || u == "Error!"){
 	    	Navigator.push(
 	          context,
 	          MaterialPageRoute(builder: (context) => signinPage()),
