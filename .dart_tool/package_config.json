@@ -32,6 +32,24 @@
       "languageVersion": "1.0"
     },
     {
+      "name": "cloud_firestore",
+      "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.13.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "cloud_firestore_platform_interface",
+      "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_platform_interface-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "cloud_firestore_web",
+      "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-0.1.1+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "collection",
       "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.14.11",
       "packageUri": "lib/",
@@ -140,10 +158,22 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.16.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.5"
+    },
+    {
       "name": "js",
       "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.1+1",
       "packageUri": "lib/",
       "languageVersion": "1.19"
+    },
+    {
+      "name": "loading_overlay",
+      "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/loading_overlay-0.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
     },
     {
       "name": "matcher",
@@ -212,6 +242,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "simple_gesture_detector",
+      "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/simple_gesture_detector-0.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -240,6 +276,12 @@
       "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "table_calendar",
+      "rootUri": "file:///Users/chasemorell/Documents/Dev/flutter/.pub-cache/hosted/pub.dartlang.org/table_calendar-2.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
     },
     {
       "name": "term_glyph",
@@ -278,7 +320,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-04-05T00:58:16.588314Z",
+  "generated": "2020-04-18T01:58:24.720622Z",
   "generator": "pub",
   "generatorVersion": "2.7.2"
 }
