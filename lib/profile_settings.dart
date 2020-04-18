@@ -24,6 +24,7 @@ class profile_settingsPageState extends State<profile_settingsPage>{
 	void onSignOutButton(){
 		writeUsername("");
         writePassword("");
+        user = null;
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => signinPage()),
@@ -36,7 +37,7 @@ class profile_settingsPageState extends State<profile_settingsPage>{
     	Future.delayed(const Duration(milliseconds: 10), () {
       	String lUsername;
     	String lPassword;
-
+    	
 	    readUsername("username").then((String value) {
 	      setState(() {
 	        lUsername = value;

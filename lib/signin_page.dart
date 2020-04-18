@@ -7,6 +7,7 @@ import 'profile_settings.dart';
 import 'readLocalProfileData.dart';
 import 'login_page.dart';
 import 'main.dart';
+import 'userData.dart';
 
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -39,12 +40,16 @@ class signinPageState extends State<signinPage> {
         writeUsername(_email);
         writePassword(_password);
 
+
+      
+      });
+      userData tempUser = userData("$_email");
+        await tempUser.createDocumentforUser();
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MyHomePage()),
         );
-      
-      });
     } else {
       print("signup failed!");
     }
@@ -175,7 +180,12 @@ class signinPageState extends State<signinPage> {
 
     final paddingA = Padding(padding: EdgeInsets.only(top: 25.0));
 
-    return Scaffold(
+    return new WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+
+        child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(
           child: Container(
@@ -213,7 +223,8 @@ class signinPageState extends State<signinPage> {
                   ),
                 ),
         ),
-
+      ),
     );
+    
   }
 }

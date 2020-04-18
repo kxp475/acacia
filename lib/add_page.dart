@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'readLocalProfileData.dart';
 import 'main.dart';
 import 'signin_page.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 
 String username = "";
@@ -28,7 +29,7 @@ class add_PageState extends State<add_Page>{
 
 	final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-
+    bool visible = false;
 	
 
 	@override
@@ -87,19 +88,32 @@ class add_PageState extends State<add_Page>{
 		  );
 		}
 
-	  void onCreateButtonPressed(){
+	  void onCreateButtonPressed() async{
+	  	visible = true;
+	  	setState((){
 
-	  	for(final i in litems){
+	  	});
+
+	  	for(final i in user.noteBookList){
 		  print('$i');
 		  if (i == '${selectedType.toString().split('.').last}'){
+		  	setState((){
+		  		visible = false;
+	  		});
 		  	alert_CannotDuplicatePages();
 		    return;
 		  }
 		}
-	  		Navigator.of(context).pop();
+				await user.initiateNoteBook("${selectedType.toString().split('.').last}");
+				await user.getNoteBookList();
+
                setState(() {
-                litems.insert(0,'${selectedType.toString().split('.').last}');
+               		visible = false;
+                	//litems.insert(0,'${selectedType.toString().split('.').last}');
+
                });
+         Navigator.of(context).pop();
+
 	  }
 
 	@override
@@ -130,68 +144,75 @@ class add_PageState extends State<add_Page>{
         		// the App.build method, and use it to set our appbar title.
         		title: Text('Add Notebook', style: new TextStyle(color : Colors.white)),
       		),
-			  body: Container(
-			    padding: const EdgeInsets.all(30.0),
-			  	child: Column(
+			  body: LoadingOverlay( child: Container(
+				    padding: const EdgeInsets.all(30.0),
+				  	child: Column(
 
-			  	children: <Widget>[
-			  	   paddingA,
-			  	   paddingA,
-			  	   Text('What do you want to track?', style: new TextStyle(fontSize: 20,color : Colors.black)),
-			       ListTile(
-			          title: const Text('Water Intake'),
-			          leading: Radio(
-			            value: pageType.Water,
-			            groupValue: selectedType,
-			            onChanged: (pageType value) {
-			              setState(() {
-			                selectedType = value;
-			              });
-			            },
-			          ),
-			        ),
-			        ListTile(
-			          title: const Text('Exercise'),
-			          leading: Radio(
-			            value: pageType.Exercise,
-			            groupValue: selectedType,
-			            onChanged: (pageType value) {
-			              setState(() {
-			                selectedType = value;
-			              });
-			            },
-			          ),
-			        ),
-			        ListTile(
-			          title: const Text('Sleep'),
-			          leading: Radio(
-			            value: pageType.Sleep,
-			            groupValue: selectedType,
-			            onChanged: (pageType value) {
-			              setState(() {
-			                selectedType = value;
-			              });
-			            },
-			          ),
-			        ),
-			        ListTile(
-			          title: const Text('Custom'),
-			          leading: Radio(
-			            value: pageType.Custom,
-			            groupValue: selectedType,
-			            onChanged: (pageType value) {
-			              setState(() {
-			                selectedType = value;
-			              });
-			            },
-			          ),
-			        ),
-			        paddingA,
-			        createButton,
-			    ],
-			   
+				  	children: <Widget>[
+				  	   paddingA,
+				  	   paddingA,
+				  	   Text('What do you want to track?', style: new TextStyle(fontSize: 20,color : Colors.black)),
+				       ListTile(
+				          title: const Text('Water Intake'),
+				          leading: Radio(
+				            value: pageType.Water,
+				            groupValue: selectedType,
+				            onChanged: (pageType value) {
+				              setState(() {
+				                selectedType = value;
+				              });
+				            },
+				          ),
+				        ),
+				        ListTile(
+				          title: const Text('Exercise'),
+				          leading: Radio(
+				            value: pageType.Exercise,
+				            groupValue: selectedType,
+				            onChanged: (pageType value) {
+				              setState(() {
+				                selectedType = value;
+				              });
+				            },
+				          ),
+				        ),
+				        ListTile(
+				          title: const Text('Sleep'),
+				          leading: Radio(
+				            value: pageType.Sleep,
+				            groupValue: selectedType,
+				            onChanged: (pageType value) {
+				              setState(() {
+				                selectedType = value;
+				              });
+				            },
+				          ),
+				        ),
+				        ListTile(
+				          title: const Text('Custom'),
+				          leading: Radio(
+				            value: pageType.Custom,
+				            groupValue: selectedType,
+				            onChanged: (pageType value) {
+				              setState(() {
+				                selectedType = value;
+				              });
+				            },
+				          ),
+				        ),
+				        paddingA,
+				        createButton,
+				    ],
+				  
 
-			  ),
+				  ),
+				),
+				
+				 isLoading: visible,
+          			// demo of some additional parameters
+          			opacity: 0.5,
+          			progressIndicator: CircularProgressIndicator(),
+
 			),
 
 		);
