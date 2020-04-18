@@ -298,7 +298,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Container(
               decoration: BoxDecoration(
                             image: DecorationImage(
-                            image: AssetImage("images/treeLogin.jpg",),
+                            image: AssetImage("images/treeBlurred.jpg",),
                             fit: BoxFit.cover,
                         ),
               ),
@@ -346,8 +346,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   });
                                 },
                                 leading: FlutterLogo(),
-                                trailing: Icon( Icons.settings),
-                                title: Text(user.noteBookList[Index]),
+                                //trailing: Icon( Icons.settings),
+                                title: Text(user.noteBookList[Index], style: new TextStyle(fontSize: 20)),
                               ),
                             ),
                           ),
