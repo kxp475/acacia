@@ -22,8 +22,8 @@
 ## Prerequisites
 - An Android (ARM processor) or iOS (iPhone 4S or newer) device.
 - Must be running either:
-  - Android Jelly Bean, v16, 4.1.x or newer
-  - iOS 8 or newer
+  - **Android** Jelly Bean, v16, 4.1.x or newer
+  - **iOS** 8 or newer
 ## Download
 - Google App Store ***WIP***
 - Apple App Store ***WIP***
@@ -34,8 +34,8 @@
 To contribute to the Acacia app you must have a viable Flutter programming environment.
 
 ## Flutter Environment
-- [Flutter SDK](https://flutter.dev/docs/get-started/install) version newer than 2.1.0 is required.
-- A IDE environment like [VS Code](https://code.visualstudio.com) or [Android Studio](https://developer.android.com/studio).
+- [Flutter SDK](https://flutter.dev/docs/get-started/install) version **newer than 2.1.0** is required.
+- A IDE like [VS Code](https://code.visualstudio.com) or [Android Studio](https://developer.android.com/studio).
 - Emulation environment.
   - Android emulation can be achieved with [Android Studio](https://developer.android.com/studio) or [Android Command Line Tools](https://developer.android.com/studio#command-tools).
   - iOS emulation requires [Xcode](https://developer.apple.com/xcode/).
