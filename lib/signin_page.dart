@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'profile_settings.dart';
 import 'readLocalProfileData.dart';
 import 'login_page.dart';
 import 'main.dart';

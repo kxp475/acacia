@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'profile_settings.dart';
 import 'readLocalProfileData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'userData.dart';
-import 'login_page.dart';
 import 'signin_page.dart';
 import 'add_page.dart';
 import 'package:loading_overlay/loading_overlay.dart';

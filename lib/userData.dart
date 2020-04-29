@@ -5,7 +5,7 @@ class userData {
   List<String> noteBookList = [];
   var databaseReference = Firestore.instance;
 
-  userData(this.username) {}
+  userData(this.username); 
 
   String getUsername() {
     return this.username;

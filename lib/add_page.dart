@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'readLocalProfileData.dart';
 import 'main.dart';
-import 'signin_page.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 String username = "";
