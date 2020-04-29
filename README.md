@@ -1,10 +1,12 @@
+<img src="images/logo.png" width="200">
+
 # Acacia
 
 **Acacia is a lifestyle app designed to keep track and organize your daily life.**
 
 - :pencil2: **Customizable**: Acacia allows you to selected activites that apply to your daily routine.
 
-- :bulb: **Smart**: It keeps track of your activites every day, allowing you to see your progress.
+- :bar_chart: **Smart**: It keeps track of your activites every day, allowing you to see your progress.
 
 - :gem: **Beautiful**: Built on the Flutter framework, Acacia has an intutive UI with a clean interface.
 
@@ -18,7 +20,8 @@
 - Google App Store ***WIP***
 - Apple App Store ***WIP***
 
-# For Developers
+
+# :computer: For Developers
 To contribute to the Acacia app you must have a viable Flutter programming environment
 
 ## Flutter Environment
@@ -43,3 +46,8 @@ Once you have set up an emulator for the system of your choice and you got the r
 ```bash
 flutter run
 ```
+## :triangular_ruler: Framework
+The Acacia app utilizes the [Flutter SDK](https://flutter.dev) for all aspects of development, from front-end to back-end. The database is implemented using Google's Firebase.
+
+- [Flutter SDK](https://flutter.dev)
+- [Firebase](https://firebase.google.com/)
