@@ -34,7 +34,7 @@ Once, the environment is set up you can clone the repo with:
 git clone https://github.com/kxp475/acacia.git
 cd acacia
 ```
-Before you can run the Acacia app on your emulator, you must download the requiremens as specified in the [pubspec.yaml](/acacia/pubspec.yaml). To do this, just run:
+Before you can run the Acacia app on your emulator, you must download the requiremens as specified in the [pubspec.yaml](pubspec.yaml). To do this, just run:
 ```bash
 flutter pub get
 ```
