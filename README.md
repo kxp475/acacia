@@ -1,4 +1,10 @@
-<img src="images/logo.png" align="center" width="200">
+<p align="center">
+  <img
+    width="200"
+    src="https://raw.githubusercontent.com/kxp475/acacia/master/images/logo.png"
+    alt="Starship – Cross-shell prompt"
+  />
+</p>
 
 # :deciduous_tree: Acacia
 
