@@ -22,8 +22,8 @@
 ## Prerequisites
 - An Android (ARM processor) or iOS (iPhone 4S or newer) device.
 - Must be running either:
-  - **Android** Jelly Bean, v16, 4.1.x or newer
-  - **iOS** 8 or newer
+  - Android Jelly Bean, v16, 4.1.x or newer
+  - iOS 8 or newer
 ## Download
 - Google App Store ***WIP***
 - Apple App Store ***WIP***
