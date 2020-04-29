@@ -10,9 +10,9 @@
 
 **Acacia is a lifestyle app designed to organize your daily life.**
 
-- :pencil2: **Customizable**: Acacia allows you to selected activities that apply to your daily routine.
+- :pencil2: **Customizable**: Acacia allows you to select activities that apply to your daily routine.
 
-- :bar_chart: **Smart**: It keeps track of your activities every day, allowing you to see your progress.
+- :bar_chart: **Smart**: It keeps track of your activities every day in "notebooks," allowing you to see your progress over time.
 
 - :gem: **Beautiful**: Built on the Flutter framework, Acacia has an modern and intuitive UI.
 
