@@ -2,7 +2,7 @@
 
 # Acacia
 
-**Acacia is a lifestyle app designed to keep track and organize your daily life.**
+**Acacia is a lifestyle app designed to organize your daily life.**
 
 - :pencil2: **Customizable**: Acacia allows you to selected activites that apply to your daily routine.
 
