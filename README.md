@@ -1,6 +1,6 @@
 <img src="images/logo.png" width="200">
 
-# Acacia
+# :deciduous_tree: Acacia
 
 **Acacia is a lifestyle app designed to organize your daily life.**
 
@@ -10,7 +10,7 @@
 
 - :gem: **Beautiful**: Built on the Flutter framework, Acacia has an intutive UI with a clean interface.
 
-# Installation
+# :iphone: Installation
 ## Prerequisites
 - An Android (ARM processor) or iOS (iPhone 4S or newer) device.
 - Must be running either:
@@ -20,7 +20,8 @@
 - Google App Store ***WIP***
 - Apple App Store ***WIP***
 
-
+---
+  
 # :computer: For Developers
 To contribute to the Acacia app you must have a viable Flutter programming environment
 
@@ -46,7 +47,7 @@ Once you have set up an emulator for the system of your choice and you got the r
 ```bash
 flutter run
 ```
-## :triangular_ruler: Framework
+## Framework
 The Acacia app utilizes the [Flutter SDK](https://flutter.dev) for all aspects of development, from front-end to back-end. The database is implemented using Google's Firebase.
 
 - [Flutter SDK](https://flutter.dev)
