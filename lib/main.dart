@@ -35,6 +35,8 @@ Future<void> createRecord() async {
   //List notebooks = await user.getNoteBookList();
   //print("List of notebooks:");
   //notebooks.forEach((notebooks) => print(notebooks));
+  //user.createNotebookArray();
+  user.getNoteBookContent("");
 }
 
 class notebookArgs {

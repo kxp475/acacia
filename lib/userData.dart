@@ -106,4 +106,57 @@ class userData {
       'notebooks': [],
     });
   }
+
+  Map<String, Map<String,Map<String,String>>>  generateNotebookMap(){
+  	//create an empty notebook map
+  	var today = new DateTime.now();
+
+	Map<String, Map<String,Map<String,String>>> map = {
+	  		'${today.year}': {
+	  		},
+	};
+
+	for( var i = 1 ; i <= 12; i++ ) { 
+		map['${today.year}']['$i'] = {};
+		for(var d = 1; d <= 31; d ++){
+			map['${today.year}']['$i']['$d'] = "";
+		}
+	}
+
+	return map;
+
+  }
+
+  void createNotebookArray() async {
+  	
+  	 Map<String, Map<String,Map<String,String>>>  map = generateNotebookMap();
+
+    print("Creating a notebook array for exercise for ${this.getUsername()}");
+    await databaseReference
+        .collection("users")
+        .document('${this.getUsername()}')
+        .updateData({
+      		'Exercise': map,
+    	});
+
+  }
+
+  void getNoteBookContent(String notebook) async{
+  	List<String> lst;
+  	print("getting notebook content");
+
+    await databaseReference
+        .collection('users')
+        .document('${this.getUsername()}')
+        .get()
+        .then((DocumentSnapshot ds) {
+      //print(ds['info']);
+         print(ds);
+      	//lst = List.from(ds['$notebook']);
+      	Map<String, dynamic>  map = ds.data;
+      	print(map);
+    });
+    //await Future<List>.delayed(const Duration(seconds: 2));
+  }
+
 }

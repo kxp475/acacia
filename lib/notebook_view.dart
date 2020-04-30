@@ -22,11 +22,20 @@ class notebook_PageState extends State<notebook_Page> {
 
   static const routeName = '/notebook_Page';
 
+  final noteBookUnitType = {'Water':'glasses','Sleep':'hours','Exercise':'minutes','Custom':'custom'};
+  final noteBookUnitePhrase = {'Water':'Number of Glasses Drank','Sleep':'Hours You Slept','Exercise':'Minutes You Exercised','Custom':"Custom Data"};
+
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  TextEditingController _controller;
+  bool isSubmitDataButtonVisible = false;
+  var today;
 
   @override
-  void initState() {}
+  void initState() {
+     _controller = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +43,9 @@ class notebook_PageState extends State<notebook_Page> {
     print("Here's the data passed from the main menu:");
     print(args.name);
     print(args.info);
+    today = new DateTime.now();
+
+
 
     final paddingA = Padding(padding: EdgeInsets.only(top: 20.0));
 
@@ -114,12 +126,61 @@ class notebook_PageState extends State<notebook_Page> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(" Add Data",
+                  Text("Enter Today's Data For:",
                       textAlign: TextAlign.left,
                       style: new TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                           color: Colors.black)),
+                  Text("${noteBookUnitePhrase[args.name]}",
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black)),
+                  Text("${today.year}-${today.month}-${today.day}",
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black)),
+                  paddingA,
+                  new TextField(
+                      controller: _controller,
+                      decoration: new InputDecoration(labelText: "Enter ${noteBookUnitType[args.name]}"),
+                      keyboardType: TextInputType.number,
+                      onChanged: (text) {
+                        if(text != ""){
+                          setState((){
+                            isSubmitDataButtonVisible = true;
+                          });
+                        }else{
+                          setState((){
+                            isSubmitDataButtonVisible = false;
+                          });
+                        }
+                        print("First text field: $text");
+                      },),
+                  paddingA,
+                  paddingA,
+                  Visibility(
+                      visible: isSubmitDataButtonVisible,
+                      child: Material(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: Colors.cyan,
+                          child: Center(
+                              child: MaterialButton(
+                                minWidth: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                                //onPressed: onSignOutButton,
+                                child: Text("Save Data",
+                                    textAlign: TextAlign.center,
+                                    style: style.copyWith(
+                                        color: Colors.white, fontWeight: FontWeight.normal)),
+                              ),
+                          ),
+                      ),
+                  ),
                 ],
               ),
             ),
