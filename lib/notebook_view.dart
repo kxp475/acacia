@@ -7,6 +7,7 @@ import 'readLocalProfileData.dart';
 import 'main.dart';
 import 'signin_page.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 String username = "";
 
@@ -26,15 +27,109 @@ class notebook_PageState extends State<notebook_Page> {
   final noteBookUnitePhrase = {'Water':'Number of Glasses Drank','Sleep':'Hours You Slept','Exercise':'Minutes You Exercised','Custom':"Custom Data"};
 
 
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   TextEditingController _controller;
   bool isSubmitDataButtonVisible = false;
+  bool hasLoaded = false;
   var today;
+  var _isLoading = false;
+  var daysInThisMonth = 30;
+  var nameOfMonth = "";
+
+  Map noteBookMonthData = {};
+
+  String inputData;
+  String notebookName;
 
   @override
   void initState() {
      _controller = TextEditingController();
+  }
+
+  void loadMonthNotebookData() async{
+
+    Map monthLength = {1:31,2:29,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31};
+    Map monthNames = {1: "January",2:"February",3:"March",4:"April",5:"May",6:"June",7:"July",8:"August",9:"September",10:"October",11:"November",12:"December"};
+    if(hasLoaded == false){
+      setState((){
+        _isLoading = true;
+      });
+      var today = new DateTime.now();
+      daysInThisMonth = monthLength[today.month];
+      nameOfMonth = monthNames[today.month];
+
+      noteBookMonthData = await user.getNoteBookContentMonth(notebookName,today.year,today.month);
+      print(noteBookMonthData);
+      setState((){});
+      hasLoaded = true;
+      _isLoading = false;
+    }
+  }
+
+  String getDayData(int index){
+    String data = noteBookMonthData["${index+1}"];
+    if(data == null){
+      data = "";
+    }
+    return data;
+
+  }
+
+  Color getCardColor(String name, String value){
+
+    if(name == "Exercise"){
+      if(value == ""){
+        return Colors.white;
+      }
+      if(int.parse(value) >= 20){
+         return Colors.green;
+      }else{
+        return Colors.red;
+      }
+    }
+
+    if(name == "Sleep"){
+      if(value == ""){
+        return Colors.white;
+      }
+      if(int.parse(value) >= 7){
+         return Colors.green;
+      }else{
+        return Colors.red;
+      }
+    }
+
+    if(name == "Water"){
+      if(value == ""){
+        return Colors.white;
+      }
+      if(int.parse(value) >= 5){
+         return Colors.green;
+      }else{
+        return Colors.red;
+      }
+    }
+
+
+    return Colors.white;
+  }
+
+  String getNoteBookBackGroundImageFile(){
+    Map bgFiles = {"Exercise" : "images/exerciseCentered.jpg","Sleep" : "images/sky.jpg","Water" : "images/water.jpg","Custom" : "images/treeBlurred.jpg"};
+    return bgFiles[notebookName];
+  }
+
+  void onSubmitDataButtomPressed()async{
+       var today = new DateTime.now();
+
+       await user.updateNotebookData("$notebookName",today.year,today.month,today.day,inputData);
+
+       setState((){
+          _isLoading = false;
+          hasLoaded = false;
+        });
   }
 
   @override
@@ -43,15 +138,19 @@ class notebook_PageState extends State<notebook_Page> {
     print("Here's the data passed from the main menu:");
     print(args.name);
     print(args.info);
+    notebookName = args.name;
+
     today = new DateTime.now();
 
-
+    loadMonthNotebookData();
 
     final paddingA = Padding(padding: EdgeInsets.only(top: 20.0));
 
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
+
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
@@ -65,15 +164,28 @@ class notebook_PageState extends State<notebook_Page> {
             ],
           ),
         ),
-        body: TabBarView(
+        body: GestureDetector( 
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          child: LoadingOverlay( 
+          child: TabBarView(
           children: [
             Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    "images/grey.jpg",
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   paddingA,
-                  Text("  This Month's",
+                  Text("  ${nameOfMonth}'s",
                       textAlign: TextAlign.left,
                       style: new TextStyle(
                           fontSize: 25,
@@ -99,9 +211,10 @@ class notebook_PageState extends State<notebook_Page> {
                       mainAxisSpacing: 0,
                       childAspectRatio: .5,
                       // Generate 100 widgets that display their index in the List.
-                      children: List.generate(30, (index) {
+                      children: List.generate(daysInThisMonth, (index) {
                         return Card(
-                          elevation: 2,
+                          elevation: 1,
+                          color: getCardColor(notebookName,'${getDayData(index)}'),
                           child: ListTile(
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 0.0, horizontal: 0.0),
@@ -112,7 +225,12 @@ class notebook_PageState extends State<notebook_Page> {
                               });
                             },
 
-                            //title: Text('${index+1}\n 2M\n '),
+                            title: Text(' ${index+1}', style: new TextStyle(fontSize: 10,color: Colors.grey)),
+                            subtitle: Text(
+                               '${getDayData(index)}',
+                                textAlign: TextAlign.center,
+                                style: new TextStyle(fontSize: 25,color: Colors.black)
+                            ),
                           ),
                         );
                       }),
@@ -122,6 +240,14 @@ class notebook_PageState extends State<notebook_Page> {
               ),
             ),
             Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    '${getNoteBookBackGroundImageFile()}',
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
               padding: const EdgeInsets.all(30.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,25 +257,24 @@ class notebook_PageState extends State<notebook_Page> {
                       style: new TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black)),
+                          color: Colors.white)),
                   Text("${noteBookUnitePhrase[args.name]}",
                       textAlign: TextAlign.left,
                       style: new TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.normal,
-                          color: Colors.black)),
-                  Text("${today.year}-${today.month}-${today.day}",
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black)),
+                          color: Colors.white)),
                   paddingA,
                   new TextField(
                       controller: _controller,
-                      decoration: new InputDecoration(labelText: "Enter ${noteBookUnitType[args.name]}"),
+                      textAlign: TextAlign.center,
+                      style: new TextStyle(fontSize: 20.0,color: Colors.black),
+                      decoration: new InputDecoration(labelText: "Enter Data for ${today.month}/${today.day}",filled: true,
+
+                  fillColor: Colors.white,),
                       keyboardType: TextInputType.number,
                       onChanged: (text) {
+                        inputData = text;
                         if(text != ""){
                           setState((){
                             isSubmitDataButtonVisible = true;
@@ -172,7 +297,13 @@ class notebook_PageState extends State<notebook_Page> {
                               child: MaterialButton(
                                 minWidth: MediaQuery.of(context).size.width,
                                 padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
-                                //onPressed: onSignOutButton,
+                                onPressed: ((){
+                                  FocusScope.of(context).requestFocus(new FocusNode());
+                                  setState((){
+                                    _isLoading = true;
+                                  });
+                                  onSubmitDataButtomPressed();
+                                }),
                                 child: Text("Save Data",
                                     textAlign: TextAlign.center,
                                     style: style.copyWith(
@@ -199,6 +330,13 @@ class notebook_PageState extends State<notebook_Page> {
               ),
             ),
           ],
+
+          ),
+        isLoading: _isLoading,
+        // demo of some additional parameters
+        opacity: 0.5,
+        progressIndicator: CircularProgressIndicator(),
+        ),
         ),
       ),
     );

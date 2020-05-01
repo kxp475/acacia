@@ -35,8 +35,10 @@ Future<void> createRecord() async {
   //List notebooks = await user.getNoteBookList();
   //print("List of notebooks:");
   //notebooks.forEach((notebooks) => print(notebooks));
-  //user.createNotebookArray();
-  user.getNoteBookContent("");
+  //user.createNotebookArray("Water");
+  Map data = await user.getNoteBookContentMonth("Exercise",2020,1);
+  //user.updateNotebookData("Exercise",2020,1,1,60);
+  print(data);
 }
 
 class notebookArgs {
