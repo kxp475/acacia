@@ -108,6 +108,7 @@ var today = new DateTime.now();
 makeWeeks(){
 	var week;
 	print(noteBookMonthData[today.day]);
+	print(today.day);
 	switch(today.weekday) {
 		case 7:
 			week = [noteBookMonthData[today.day],0,0,0,0,0,0];
