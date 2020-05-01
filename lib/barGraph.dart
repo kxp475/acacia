@@ -132,7 +132,7 @@ makeWeeks(){
 			break;
 		case 6:
 			week = [noteBookMonthData[today.day-6],noteBookMonthData[today.day-5],noteBookMonthData[today.day-4],noteBookMonthData[today.day-3],
-				noteBookMonthData[today.day-2],noteBookMonthData[today.day-1],noteBookMonthData[14]];
+				noteBookMonthData[today.day-2],noteBookMonthData[today.day-1],noteBookMonthData[today.day]];
 			break;
 
 		default:
