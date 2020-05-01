@@ -109,10 +109,8 @@ makeWeeks(){
 	var week;
 
 	//debug prints
-	print(today.year);
-	print(today.month);
-	print(today.day);
-	print(noteBookMonthData[today.day]);
+	print("The day: ${today.day}");
+	print("Today's Data: ${noteBookMonthData[today.day]}");
 
 	switch(today.weekday) {
 		case 7:
