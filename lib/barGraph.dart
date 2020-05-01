@@ -95,14 +95,19 @@ class BarChartSample1State extends State<BarChartSample1> {
     );
   }
 
+
+Map noteBookMonthData = {};
+var today = new DateTime.now();
+
   dateData() async {
 	String notebookName;
-  	Map noteBookMonthData = {};
-      	var today = new DateTime.now();
-	var week;
 
 	noteBookMonthData = await user.getNoteBookContentMonth(notebookName,today.year,today.month);
+  }
 
+makeWeeks(){
+	var week;
+	print(noteBookMonthData[today.day]);
 	switch(today.weekday) {
 		case 7:
 			week = [noteBookMonthData[today.day],0,0,0,0,0,0];
@@ -133,34 +138,32 @@ class BarChartSample1State extends State<BarChartSample1> {
 			return null;
 
 	}
-	print(week);
 
-      setState((){});
+	for (int k = 0; k < 7; k++){
+		if (week[k] == null)
+			week[k] = 0;
+	}
+
+	print(week);
 	return week;
   }
-
-  weekGetter() async {
-	  final List week = await dateData();
-	  return week;
-  }
-
 
   List<BarChartGroupData> showingGroups(week) => List.generate(7, (i) {
         switch (i) {
           case 0:
             return makeGroupData(0, week[0].toDouble(), isTouched: i == touchedIndex);
           case 1:
-            return makeGroupData(1, 6.5, isTouched: i == touchedIndex);
+            return makeGroupData(1, week[1].toDouble(), isTouched: i == touchedIndex);
           case 2:
-            return makeGroupData(2, 5, isTouched: i == touchedIndex);
+            return makeGroupData(2, week[2].toDouble(), isTouched: i == touchedIndex);
           case 3:
-            return makeGroupData(3, 7.5, isTouched: i == touchedIndex);
+            return makeGroupData(3, week[3].toDouble(), isTouched: i == touchedIndex);
           case 4:
-            return makeGroupData(4, 9, isTouched: i == touchedIndex);
+            return makeGroupData(4, week[4].toDouble(), isTouched: i == touchedIndex);
           case 5:
-            return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
+            return makeGroupData(5, week[5].toDouble(), isTouched: i == touchedIndex);
           case 6:
-            return makeGroupData(6, 6.5, isTouched: i == touchedIndex);
+            return makeGroupData(6, week[6].toDouble(), isTouched: i == touchedIndex);
           default:
             return null;
         }
@@ -168,7 +171,7 @@ class BarChartSample1State extends State<BarChartSample1> {
   
 
   BarChartData mainBarData() {
-	  var week = weekGetter();
+	  var week = makeWeeks();
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
