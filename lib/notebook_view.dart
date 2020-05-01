@@ -37,6 +37,7 @@ class notebook_PageState extends State<notebook_Page> {
   var _isLoading = false;
   var daysInThisMonth = 30;
   var nameOfMonth = "";
+  var monthOffset = 0;
 
   Map noteBookMonthData = {};
 
@@ -57,10 +58,12 @@ class notebook_PageState extends State<notebook_Page> {
         _isLoading = true;
       });
       var today = new DateTime.now();
-      daysInThisMonth = monthLength[today.month];
-      nameOfMonth = monthNames[today.month];
+      int month = today.month + monthOffset;
 
-      noteBookMonthData = await user.getNoteBookContentMonth(notebookName,today.year,today.month);
+      daysInThisMonth = monthLength[month];
+      nameOfMonth = monthNames[month];
+
+      noteBookMonthData = await user.getNoteBookContentMonth(notebookName,today.year,month);
       print(noteBookMonthData);
       setState((){});
       hasLoaded = true;
@@ -75,6 +78,28 @@ class notebook_PageState extends State<notebook_Page> {
     }
     return data;
 
+  }
+
+  void changeMonthView(int change){
+
+    monthOffset = monthOffset + change;
+
+    var today = new DateTime.now();
+    int month = today.month + monthOffset;
+
+    if(month == 0){
+      monthOffset++;
+      return;
+    }
+    if(month == 13){
+      monthOffset--;
+      return;
+    }
+
+    hasLoaded = false;
+
+    print("changing month!");
+    loadMonthNotebookData();
   }
 
   Color getCardColor(String name, String value){
@@ -185,18 +210,41 @@ class notebook_PageState extends State<notebook_Page> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   paddingA,
-                  Text("  ${nameOfMonth}'s",
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black)),
-                  Text("  ${args.name}",
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
+                  Row(
+                    children: <Widget>[
+                       IconButton(
+                          icon: Icon(Icons.arrow_left),
+                          onPressed: () {
+                              changeMonthView(-1);
+                          },
+                       ),
+                       Expanded(
+                        child: Column( 
+                          children: <Widget>[ 
+                              Text("${nameOfMonth}",
+                                  textAlign: TextAlign.left,
+                                  style: new TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black)),
+                              Text("${args.name}",
+                                  textAlign: TextAlign.left,
+                                  style: new TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),                             
+                              ]),
+
+                            ),
+                       IconButton(
+                          icon: Icon(Icons.arrow_right),
+                          onPressed: () {
+                              changeMonthView(1);
+                          },
+                       ),
+                    ],
+                  ),
+        
                   paddingA,
                   new Expanded(
                     child: GridView.count(
