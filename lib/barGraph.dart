@@ -100,15 +100,20 @@ Map noteBookMonthData = {};
 var today = new DateTime.now();
 
   dateData() async {
-	String notebookName;
+	String notebookName; 
 
 	noteBookMonthData = await user.getNoteBookContentMonth(notebookName,today.year,today.month);
   }
 
 makeWeeks(){
 	var week;
-	print(noteBookMonthData[today.day]);
+
+	//debug prints
+	print(today.year);
+	print(today.month);
 	print(today.day);
+	print(noteBookMonthData[today.day]);
+
 	switch(today.weekday) {
 		case 7:
 			week = [noteBookMonthData[today.day],0,0,0,0,0,0];
@@ -145,7 +150,7 @@ makeWeeks(){
 			week[k] = 0;
 	}
 
-	print(week);
+	print("Processed Week: $week");
 	return week;
   }
 
