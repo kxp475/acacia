@@ -33,10 +33,22 @@ class BarChartSample1State extends State<BarChartSample1> {
 
   String notebookName;
 
+  Map noteBookMonthData = {};
+  var today = new DateTime.now();
+
+  void dateData() async {
+    noteBookMonthData = await user.getNoteBookContentMonth(
+        notebookName, today.year, today.month);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final notebookArgs args = ModalRoute.of(context).settings.arguments;
     notebookName = args.name;
+
+    //get the data
+    dateData();
 
     return AspectRatio(
       aspectRatio: 1,
@@ -118,21 +130,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     );
   }
 
-  Map noteBookMonthData = {};
-  var today = new DateTime.now();
-
-  dateData() async {
-    noteBookMonthData = await user.getNoteBookContentMonth(
-        notebookName, today.year, today.month);
-  }
-
   makeWeekLabels() {
-    //debug prints
-    print("The day: ${today.day}");
-    print("The Notebook Name: $notebookName");
-    print("The Map: $noteBookMonthData");
-    print("The Data: ${noteBookMonthData[today.day]}");
-
     var weekLabels;
     int day = today.day;
 
@@ -176,6 +174,12 @@ class BarChartSample1State extends State<BarChartSample1> {
   makeWeekData() {
     var weekData;
     int day = today.day;
+
+    //debug prints
+    print("The day: ${today.day}");
+    print("The Notebook Name: $notebookName");
+    print("The Map: $noteBookMonthData");
+    print(noteBookMonthData["${today.day}"]);
 
     switch (day) {
       case 1:
