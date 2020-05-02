@@ -39,7 +39,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Text(
-                    'This Week',
+                    'Last 7 Days',
                     style: TextStyle(
                         color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
                   ),
@@ -105,69 +105,106 @@ var today = new DateTime.now();
 	noteBookMonthData = await user.getNoteBookContentMonth(notebookName,today.year,today.month);
   }
 
-makeWeeks(){
-	var week;
-
+makeWeekLabels(){
 	//debug prints
 	print("The day: ${today.day}");
 	print("Today's Data: ${noteBookMonthData[today.day]}");
 
-	switch(today.weekday) {
-		case 7:
-			week = [noteBookMonthData[today.day],0,0,0,0,0,0];
-			break;
+	var weekLabels;
+	int day = today.day;
+
+	switch(day) {
 		case 1:
-			week = [noteBookMonthData[today.day-1],noteBookMonthData[today.day],0,0,0,0,0];
+			weekLabels = [1,"","","","","",""];
 			break;
 		case 2:
-			week = [noteBookMonthData[today.day-2],noteBookMonthData[today.day-1],noteBookMonthData[today.day],0,0,0,0];
+			weekLabels = [1,2,"","","","",""];
 			break;
 		case 3:
-			week = [noteBookMonthData[today.day-3],noteBookMonthData[today.day-2],noteBookMonthData[today.day-1],noteBookMonthData[today.day],0,0,0];
+			weekLabels = [1,2,3,"","","",""];
 			break;
 		case 4:
-			week = [noteBookMonthData[today.day-4],noteBookMonthData[today.day-3],noteBookMonthData[today.day-2],noteBookMonthData[today.day-1],
-				noteBookMonthData[today.day],0,0];
+			weekLabels = [1,2,3,4,"","",""];
 			break;
 		case 5:
-			week = [noteBookMonthData[today.day-5],noteBookMonthData[today.day-4],noteBookMonthData[today.day-3],noteBookMonthData[today.day-2],
-				noteBookMonthData[today.day-1],noteBookMonthData[today.day],0];
+			weekLabels = [1,2,3,4,5,"",""];
 			break;
 		case 6:
-			week = [noteBookMonthData[today.day-6],noteBookMonthData[today.day-5],noteBookMonthData[today.day-4],noteBookMonthData[today.day-3],
-				noteBookMonthData[today.day-2],noteBookMonthData[today.day-1],noteBookMonthData[today.day]];
+			weekLabels = [1,2,3,4,5,6,""];
+			break;
+		case 7:
+			weekLabels = [1,2,3,4,5,6,7];
 			break;
 
 		default:
-			return null;
+			weekLabels = [day-6,day-5,day-4,day-3,day-2,day-1,day];
 
 	}
 
-	for (int k = 0; k < 7; k++){
-		if (week[k] == null)
-			week[k] = 0;
+	return weekLabels;
+}
+
+makeWeekData(){
+	//debug prints
+	print("The day: ${today.day}");
+	print("Today's Data: ${noteBookMonthData[today.day]}");
+
+	var weekData;
+	int day = today.day;
+
+	switch(day) {
+		case 1:
+			weekData = [noteBookMonthData[1],0,0,0,0,0,0];
+			break;
+		case 2:
+			weekData = [noteBookMonthData[1],noteBookMonthData[2],0,0,0,0,0];
+			break;
+		case 3:
+			weekData = [noteBookMonthData[1],noteBookMonthData[2],noteBookMonthData[3],0,0,0,0];
+			break;
+		case 4:
+			weekData = [noteBookMonthData[1],noteBookMonthData[2],noteBookMonthData[3],noteBookMonthData[4],0,0,0];
+			break;
+		case 5:
+			weekData = [noteBookMonthData[1],noteBookMonthData[2],noteBookMonthData[3],noteBookMonthData[4],noteBookMonthData[5],0,0];
+			break;
+		case 6:
+			weekData = [noteBookMonthData[1],noteBookMonthData[2],noteBookMonthData[3],noteBookMonthData[4],noteBookMonthData[5],noteBookMonthData[6],0];
+			break;
+		case 7:
+			weekData = [noteBookMonthData[1],noteBookMonthData[2],noteBookMonthData[3],noteBookMonthData[4],noteBookMonthData[5],
+					noteBookMonthData[6],noteBookMonthData[7]];
+			break;
+
+		default:
+			weekData = [noteBookMonthData[day-6],noteBookMonthData[day-5],noteBookMonthData[day-4],noteBookMonthData[day-3],
+					noteBookMonthData[day-2],noteBookMonthData[day-1],noteBookMonthData[day]];
+
 	}
 
-	print("Processed Week: $week");
-	return week;
-  }
+	for (int k = 0 ; k < 7; k++){
+		if (weekData[k] == null)
+			weekData[k] = 0;
+	}
+	return weekData;
+}
 
-  List<BarChartGroupData> showingGroups(week) => List.generate(7, (i) {
+  List<BarChartGroupData> showingGroups(weekData) => List.generate(7, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, week[0].toDouble(), isTouched: i == touchedIndex);
+            return makeGroupData(0, weekData[0].toDouble(), isTouched: i == touchedIndex);
           case 1:
-            return makeGroupData(1, week[1].toDouble(), isTouched: i == touchedIndex);
+            return makeGroupData(1, weekData[1].toDouble(), isTouched: i == touchedIndex);
           case 2:
-            return makeGroupData(2, week[2].toDouble(), isTouched: i == touchedIndex);
+            return makeGroupData(2, weekData[2].toDouble(), isTouched: i == touchedIndex);
           case 3:
-            return makeGroupData(3, week[3].toDouble(), isTouched: i == touchedIndex);
+            return makeGroupData(3, weekData[3].toDouble(), isTouched: i == touchedIndex);
           case 4:
-            return makeGroupData(4, week[4].toDouble(), isTouched: i == touchedIndex);
+            return makeGroupData(4, weekData[4].toDouble(), isTouched: i == touchedIndex);
           case 5:
-            return makeGroupData(5, week[5].toDouble(), isTouched: i == touchedIndex);
+            return makeGroupData(5, weekData[5].toDouble(), isTouched: i == touchedIndex);
           case 6:
-            return makeGroupData(6, week[6].toDouble(), isTouched: i == touchedIndex);
+            return makeGroupData(6, weekData[6].toDouble(), isTouched: i == touchedIndex);
           default:
             return null;
         }
@@ -175,34 +212,37 @@ makeWeeks(){
   
 
   BarChartData mainBarData() {
-	  var week = makeWeeks();
+	  var weekLabels = makeWeekLabels();
+	  var weekData = makeWeekData();
+	  weekData[0]=3;
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
             tooltipBgColor: Colors.cyan.shade800,
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
+    		Map monthNames = {1: "January",2:"February",3:"March",4:"April",5:"May",6:"June",7:"July",8:"August",9:"September",10:"October",11:"November",12:"December"};
               String weekDay;
               switch (group.x.toInt()) {
                 case 0:
-                  weekDay = 'Sunday';
+                  weekDay = monthNames[today.month];
                   break;
                 case 1:
-                  weekDay = 'Monday';
+                  weekDay = monthNames[today.month];
                   break;
                 case 2:
-                  weekDay = 'Tuesday';
+                  weekDay = monthNames[today.month];
                   break;
                 case 3:
-                  weekDay = 'Wednesday';
+                  weekDay = monthNames[today.month];
                   break;
                 case 4:
-                  weekDay = 'Thursday';
+                  weekDay = monthNames[today.month];
                   break;
                 case 5:
-                  weekDay = 'Friday';
+                  weekDay = monthNames[today.month];
                   break;
                 case 6:
-                  weekDay = 'Saturday';
+                  weekDay = monthNames[today.month];
                   break;
               }
               return BarTooltipItem(
@@ -229,19 +269,19 @@ makeWeeks(){
           getTitles: (double value) {
             switch (value.toInt()) {
               case 0:
-                return 'S';
+                return weekLabels[0].toString();
               case 1:
-                return 'M';
+                return weekLabels[1].toString();
               case 2:
-                return 'T';
+                return weekLabels[2].toString();
               case 3:
-                return 'W';
+                return weekLabels[3].toString();
               case 4:
-                return 'T';
+                return weekLabels[4].toString();
               case 5:
-                return 'F';
+                return weekLabels[5].toString();
               case 6:
-                return 'S';
+                return weekLabels[6].toString();
               default:
                 return '';
             }
@@ -254,7 +294,7 @@ makeWeeks(){
       borderData: FlBorderData(
         show: false,
       ),
-      barGroups: showingGroups(week),
+      barGroups: showingGroups(weekData),
     );
   }
 
