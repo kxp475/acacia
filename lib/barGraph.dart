@@ -130,6 +130,7 @@ class BarChartSample1State extends State<BarChartSample1> {
   makeWeekLabels() {
     //debug prints
     print("The day: ${today.day}");
+    print("the Map: $noteBookMonthData");
     print("Today's Data: ${noteBookMonthData[today.day]}");
 
     var weekLabels;
