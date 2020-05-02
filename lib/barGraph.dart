@@ -39,6 +39,7 @@ class BarChartSample1State extends State<BarChartSample1> {
   void dateData() async {
     noteBookMonthData = await user.getNoteBookContentMonth(
         notebookName, today.year, today.month);
+    print(noteBookMonthData);
   }
 
 
@@ -48,7 +49,6 @@ class BarChartSample1State extends State<BarChartSample1> {
     notebookName = args.name;
 
     //get the data
-    dateData();
 
     return AspectRatio(
       aspectRatio: 1,
@@ -174,29 +174,23 @@ class BarChartSample1State extends State<BarChartSample1> {
   makeWeekData() {
     var weekData;
     int day = today.day;
-
-    //debug prints
-    print("The day: ${today.day}");
-    print("The Notebook Name: $notebookName");
-    print("The Map: $noteBookMonthData");
-    print(noteBookMonthData["${today.day}"]);
-
+    
     switch (day) {
       case 1:
-        weekData = [noteBookMonthData["1"], 0, 0, 0, 0, 0, 0];
+        weekData = [noteBookMonthData["1"], "0", "0", "0", "0", "0", "0"];
         break;
       case 2:
-        weekData = [noteBookMonthData["1"], noteBookMonthData["2"], 0, 0, 0, 0, 0];
+        weekData = [noteBookMonthData["1"], noteBookMonthData["2"], "0", "0", "0", "0", "0"];
         break;
       case 3:
         weekData = [
           noteBookMonthData["1"],
           noteBookMonthData["2"],
           noteBookMonthData["3"],
-          0,
-          0,
-          0,
-          0
+          "0",
+          "0",
+          "0",
+          "0"
         ];
         break;
       case 4:
@@ -205,9 +199,9 @@ class BarChartSample1State extends State<BarChartSample1> {
           noteBookMonthData["2"],
           noteBookMonthData["3"],
           noteBookMonthData["4"],
-          0,
-          0,
-          0
+          "0",
+          "0",
+          "0"
         ];
         break;
       case 5:
@@ -217,8 +211,8 @@ class BarChartSample1State extends State<BarChartSample1> {
           noteBookMonthData["3"],
           noteBookMonthData["4"],
           noteBookMonthData["5"],
-          0,
-          0
+          "0",
+          "0"
         ];
         break;
       case 6:
@@ -229,7 +223,7 @@ class BarChartSample1State extends State<BarChartSample1> {
           noteBookMonthData["4"],
           noteBookMonthData["5"],
           noteBookMonthData["6"],
-          0
+          "0"
         ];
         break;
       case 7:
@@ -257,7 +251,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     }
 
     for (int k = 0; k < 7; k++) {
-      if (weekData[k] == null) weekData[k] = 0;
+      if (weekData[k] == null) weekData[k] = "0";
     }
 
     return weekData;
@@ -266,41 +260,42 @@ class BarChartSample1State extends State<BarChartSample1> {
   List<BarChartGroupData> showingGroups(weekData) => List.generate(7, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, weekData[0].toDouble(),
+            return makeGroupData(0, double.parse(weekData[0]),
                 isTouched: i == touchedIndex);
           case 1:
-            return makeGroupData(1, weekData[1].toDouble(),
+            return makeGroupData(1, double.parse(weekData[1]),
                 isTouched: i == touchedIndex);
           case 2:
-            return makeGroupData(2, weekData[2].toDouble(),
+            return makeGroupData(2, double.parse(weekData[2]),
                 isTouched: i == touchedIndex);
           case 3:
-            return makeGroupData(3, weekData[3].toDouble(),
+            return makeGroupData(3, double.parse(weekData[3]),
                 isTouched: i == touchedIndex);
           case 4:
-            return makeGroupData(4, weekData[4].toDouble(),
+            return makeGroupData(4, double.parse(weekData[4]),
                 isTouched: i == touchedIndex);
           case 5:
-            return makeGroupData(5, weekData[5].toDouble(),
+            return makeGroupData(5, double.parse(weekData[5]),
                 isTouched: i == touchedIndex);
           case 6:
-            return makeGroupData(6, weekData[6].toDouble(),
+            return makeGroupData(6, double.parse(weekData[6]),
                 isTouched: i == touchedIndex);
           default:
             return null;
         }
       });
 
-  checkZero(x) {
+String checkZero(x) {
     if (x == 0) {
       return "";
     } else {
-      print(x.toString());
-      return x.toString();
+      print("$x");
+      return "$x";
     }
   }
 
   BarChartData mainBarData() {
+    dateData();
     var weekLabels = makeWeekLabels();
     var weekData = makeWeekData();
     return BarChartData(
@@ -357,19 +352,19 @@ class BarChartSample1State extends State<BarChartSample1> {
           getTitles: (double value) {
             switch (value.toInt()) {
               case 0:
-                return weekLabels[0].toString();
+                return "${weekLabels[0]}";
               case 1:
-                return weekLabels[1].toString();
+                return "${weekLabels[1]}";
               case 2:
-                return weekLabels[2].toString();
+                return "${weekLabels[2]}";
               case 3:
-                return weekLabels[3].toString();
+                return "${weekLabels[3]}";
               case 4:
-                return weekLabels[4].toString();
+                return "${weekLabels[4]}";
               case 5:
-                return weekLabels[5].toString();
+                return "${weekLabels[5]}";
               case 6:
-                return weekLabels[6].toString();
+                return "${weekLabels[6]}";
               default:
                 return '';
             }
