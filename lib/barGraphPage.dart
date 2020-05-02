@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'barGraph.dart';
 
@@ -8,7 +7,7 @@ class BarChartPage extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: Center(
-          child: BarChartSample1(),
+        child: BarChartSample1(),
       ),
     );
   }
