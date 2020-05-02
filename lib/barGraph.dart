@@ -179,16 +179,16 @@ class BarChartSample1State extends State<BarChartSample1> {
 
     switch (day) {
       case 1:
-        weekData = [noteBookMonthData[1], 0, 0, 0, 0, 0, 0];
+        weekData = [noteBookMonthData["1"], 0, 0, 0, 0, 0, 0];
         break;
       case 2:
-        weekData = [noteBookMonthData[1], noteBookMonthData[2], 0, 0, 0, 0, 0];
+        weekData = [noteBookMonthData["1"], noteBookMonthData["2"], 0, 0, 0, 0, 0];
         break;
       case 3:
         weekData = [
-          noteBookMonthData[1],
-          noteBookMonthData[2],
-          noteBookMonthData[3],
+          noteBookMonthData["1"],
+          noteBookMonthData["2"],
+          noteBookMonthData["3"],
           0,
           0,
           0,
@@ -197,10 +197,10 @@ class BarChartSample1State extends State<BarChartSample1> {
         break;
       case 4:
         weekData = [
-          noteBookMonthData[1],
-          noteBookMonthData[2],
-          noteBookMonthData[3],
-          noteBookMonthData[4],
+          noteBookMonthData["1"],
+          noteBookMonthData["2"],
+          noteBookMonthData["3"],
+          noteBookMonthData["4"],
           0,
           0,
           0
@@ -208,35 +208,35 @@ class BarChartSample1State extends State<BarChartSample1> {
         break;
       case 5:
         weekData = [
-          noteBookMonthData[1],
-          noteBookMonthData[2],
-          noteBookMonthData[3],
-          noteBookMonthData[4],
-          noteBookMonthData[5],
+          noteBookMonthData["1"],
+          noteBookMonthData["2"],
+          noteBookMonthData["3"],
+          noteBookMonthData["4"],
+          noteBookMonthData["5"],
           0,
           0
         ];
         break;
       case 6:
         weekData = [
-          noteBookMonthData[1],
-          noteBookMonthData[2],
-          noteBookMonthData[3],
-          noteBookMonthData[4],
-          noteBookMonthData[5],
-          noteBookMonthData[6],
+          noteBookMonthData["1"],
+          noteBookMonthData["2"],
+          noteBookMonthData["3"],
+          noteBookMonthData["4"],
+          noteBookMonthData["5"],
+          noteBookMonthData["6"],
           0
         ];
         break;
       case 7:
         weekData = [
-          noteBookMonthData[1],
-          noteBookMonthData[2],
-          noteBookMonthData[3],
-          noteBookMonthData[4],
-          noteBookMonthData[5],
-          noteBookMonthData[6],
-          noteBookMonthData[7]
+          noteBookMonthData["1"],
+          noteBookMonthData["2"],
+          noteBookMonthData["3"],
+          noteBookMonthData["4"],
+          noteBookMonthData["5"],
+          noteBookMonthData["6"],
+          noteBookMonthData["7"]
         ];
         break;
 
