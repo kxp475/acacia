@@ -22,6 +22,8 @@ class BarChartSample1State extends State<BarChartSample1> {
 
   bool isPlaying = false;
 
+Map monthNames = {1: "January",2:"February",3:"March",4:"April",5:"May",6:"June",7:"July",8:"August",9:"September",
+			10:"October",11:"November",12:"December"};
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
@@ -38,7 +40,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Text(
+		Text(
                     'Last 7 Days',
                     style: TextStyle(
                         color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
@@ -46,10 +48,16 @@ class BarChartSample1State extends State<BarChartSample1> {
                   const SizedBox(
                     height: 4,
                   ),
+                  Text(
+                    '${monthNames[today.month]}',
+                    style: TextStyle(
+                        color: Colors.cyan.shade100, fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(
                     height: 38,
                   ),
-                  Expanded(
+
+	Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: BarChart(
@@ -211,38 +219,45 @@ makeWeekData(){
       });
   
 
+checkZero(x){
+	if(x == 0){
+		return "";
+	} else {
+		print(x.toString());
+		return x.toString();
+	}
+}
+
   BarChartData mainBarData() {
 	  var weekLabels = makeWeekLabels();
 	  var weekData = makeWeekData();
-	  weekData[0]=3;
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
             tooltipBgColor: Colors.cyan.shade800,
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
-    		Map monthNames = {1: "January",2:"February",3:"March",4:"April",5:"May",6:"June",7:"July",8:"August",9:"September",10:"October",11:"November",12:"December"};
               String weekDay;
               switch (group.x.toInt()) {
                 case 0:
-                  weekDay = monthNames[today.month];
+                  weekDay = "${monthNames[today.month]} ${weekLabels[0]}";
                   break;
                 case 1:
-                  weekDay = monthNames[today.month];
+                  weekDay = "${monthNames[today.month]} ${weekLabels[1]}";
                   break;
                 case 2:
-                  weekDay = monthNames[today.month];
+                  weekDay = "${monthNames[today.month]} ${weekLabels[2]}";
                   break;
                 case 3:
-                  weekDay = monthNames[today.month];
+                  weekDay = "${monthNames[today.month]} ${weekLabels[3]}";
                   break;
                 case 4:
-                  weekDay = monthNames[today.month];
+                  weekDay = "${monthNames[today.month]} ${weekLabels[4]}";
                   break;
                 case 5:
-                  weekDay = monthNames[today.month];
+                  weekDay = "${monthNames[today.month]} ${weekLabels[5]}";
                   break;
                 case 6:
-                  weekDay = monthNames[today.month];
+                  weekDay = "${monthNames[today.month]} ${weekLabels[6]}";
                   break;
               }
               return BarTooltipItem(
