@@ -248,7 +248,7 @@ class BarChartSample1State extends State<BarChartSample1> {
           noteBookMonthData["${day - 3}"],
           noteBookMonthData["${day - 2}"],
           noteBookMonthData["${day - 1}"],
-          noteBookMonthData["${day}"]
+          noteBookMonthData["$day"]
         ];
     }
 
