@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'barGraph.dart';
+import 'main.dart';
 
 class BarChartPage extends StatelessWidget {
   @override

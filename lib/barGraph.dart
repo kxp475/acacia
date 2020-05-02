@@ -1,12 +1,7 @@
 import 'dart:async';
-import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'main.dart';
-
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'notebook_view.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class BarChartSample1 extends StatefulWidget {
   @override
@@ -35,8 +30,15 @@ class BarChartSample1State extends State<BarChartSample1> {
     11: "November",
     12: "December"
   };
+
+  String notebookName;
+
   @override
   Widget build(BuildContext context) {
+    final notebookArgs args = ModalRoute.of(context).settings.arguments;
+    notebookName = args.name;
+    print("Notebook Name: $notebookName");
+
     return AspectRatio(
       aspectRatio: 1,
       child: Card(
@@ -121,11 +123,6 @@ class BarChartSample1State extends State<BarChartSample1> {
   var today = new DateTime.now();
 
   dateData() async {
-    String notebookName;
-    final notebookArgs args = ModalRoute.of(context).settings.arguments;
-    notebookName = args.name;
-    print("Notebook Name: $notebookName");
-
     noteBookMonthData = await user.getNoteBookContentMonth(
         notebookName, today.year, today.month);
   }
@@ -180,6 +177,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     //debug prints
     print("The day: ${today.day}");
     print("Today's Data: ${noteBookMonthData[today.day]}");
+    //print("5th day's Data: ${noteBookMonthData[5]}");
 
     var weekData;
     int day = today.day;
