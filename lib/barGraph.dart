@@ -242,13 +242,13 @@ class BarChartSample1State extends State<BarChartSample1> {
 
       default:
         weekData = [
-          noteBookMonthData[day - 6],
-          noteBookMonthData[day - 5],
-          noteBookMonthData[day - 4],
-          noteBookMonthData[day - 3],
-          noteBookMonthData[day - 2],
-          noteBookMonthData[day - 1],
-          noteBookMonthData[day]
+          noteBookMonthData["${day - 6}"],
+          noteBookMonthData["${day - 5}"],
+          noteBookMonthData["${day - 4}"],
+          noteBookMonthData["${day - 3}"],
+          noteBookMonthData["${day - 2}"],
+          noteBookMonthData["${day - 1}"],
+          noteBookMonthData["${day}"]
         ];
     }
 
