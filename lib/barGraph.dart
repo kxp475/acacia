@@ -37,7 +37,6 @@ class BarChartSample1State extends State<BarChartSample1> {
   Widget build(BuildContext context) {
     final notebookArgs args = ModalRoute.of(context).settings.arguments;
     notebookName = args.name;
-    print("Notebook Name: $notebookName");
 
     return AspectRatio(
       aspectRatio: 1,
@@ -130,8 +129,9 @@ class BarChartSample1State extends State<BarChartSample1> {
   makeWeekLabels() {
     //debug prints
     print("The day: ${today.day}");
-    print("the Map: $noteBookMonthData");
-    print("Today's Data: ${noteBookMonthData[today.day]}");
+    print("The Notebook Name: $notebookName");
+    print("The Map: $noteBookMonthData");
+    print("The Data: ${noteBookMonthData[today.day]}");
 
     var weekLabels;
     int day = today.day;
@@ -170,16 +170,10 @@ class BarChartSample1State extends State<BarChartSample1> {
           day
         ];
     }
-
     return weekLabels;
   }
 
   makeWeekData() {
-    //debug prints
-    print("The day: ${today.day}");
-    print("Today's Data: ${noteBookMonthData[today.day]}");
-    //print("5th day's Data: ${noteBookMonthData[5]}");
-
     var weekData;
     int day = today.day;
 
@@ -261,6 +255,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     for (int k = 0; k < 7; k++) {
       if (weekData[k] == null) weekData[k] = 0;
     }
+
     return weekData;
   }
 
