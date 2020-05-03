@@ -49,6 +49,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     notebookName = args.name;
 
     //get the data
+    dateData();
 
     return AspectRatio(
       aspectRatio: 1,
@@ -295,7 +296,6 @@ String checkZero(x) {
   }
 
   BarChartData mainBarData() {
-    dateData();
     var weekLabels = makeWeekLabels();
     var weekData = makeWeekData();
     return BarChartData(
