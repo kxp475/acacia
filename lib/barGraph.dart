@@ -42,7 +42,6 @@ class BarChartSample1State extends State<BarChartSample1> {
     print(noteBookMonthData);
   }
 
-
   @override
   Widget build(BuildContext context) {
     final notebookArgs args = ModalRoute.of(context).settings.arguments;
@@ -175,13 +174,21 @@ class BarChartSample1State extends State<BarChartSample1> {
   makeWeekData() {
     var weekData;
     int day = today.day;
-    
+
     switch (day) {
       case 1:
         weekData = [noteBookMonthData["1"], "0", "0", "0", "0", "0", "0"];
         break;
       case 2:
-        weekData = [noteBookMonthData["1"], noteBookMonthData["2"], "0", "0", "0", "0", "0"];
+        weekData = [
+          noteBookMonthData["1"],
+          noteBookMonthData["2"],
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ];
         break;
       case 3:
         weekData = [
@@ -286,7 +293,7 @@ class BarChartSample1State extends State<BarChartSample1> {
         }
       });
 
-String checkZero(x) {
+  String checkZero(x) {
     if (x == 0) {
       return "";
     } else {
