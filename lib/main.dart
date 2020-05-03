@@ -14,6 +14,7 @@ import 'add_page.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'root_page.dart';
 import 'notebook_view.dart';
+import 'log_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -48,6 +49,11 @@ class notebookArgs {
   notebookArgs(this.name, this.info);
 }
 
+class logArgs{
+  final List notebooks;
+  logArgs(this.notebooks);
+}
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -59,6 +65,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         notebook_Page.routeName: (context) => notebook_Page(),
+        log_Page.routeName: (context) => log_Page(),
       },
       home: root_Page(), //signinPage(),
     );
@@ -82,6 +89,26 @@ class _MyHomePageState extends State<MyHomePage> {
   bool visible = true;
   bool hasLoaded = false;
   int _id;
+
+
+  Route _logRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => log_Page(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
 
   void loadNoteBook() async {
     if (hasLoaded == false) {
@@ -160,6 +187,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void handleNoteBookTap() {
     print("Touched the Notebook");
+  }
+
+  Icon getIconForNotebook(String notebookName){
+    Map<String, Icon> icons = {"Exercise" : Icon(Icons.directions_run), "Sleep" : Icon(Icons.local_hotel), "Water" : Icon(Icons.local_drink), "Custom" : Icon(Icons.looks)};
+    return icons[notebookName];
   }
 
   @override
@@ -332,7 +364,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         );
                                       });
                                     },
-                                    leading: FlutterLogo(),
+                                    leading: getIconForNotebook(user.noteBookList.elementAt(Index)),//Icon(Icons.directions_run),
                                     //trailing: Icon( Icons.settings),
                                     title: Text(user.noteBookList[Index],
                                         style: new TextStyle(fontSize: 20)),
@@ -351,8 +383,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
 
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: addPage,
-          tooltip: 'Increment',
+          onPressed: ((){
+                Navigator.pushNamed(
+                  context,
+                  log_Page.routeName,
+                  arguments: logArgs(
+                    user.noteBookList,
+                  )
+                );
+
+          }),
+          tooltip: 'Log Notebook Data',
           icon: Icon(Icons.mode_edit, color: Colors.white),
           label: Text("Log",
               style: new TextStyle(fontSize: 20, color: Colors.white)),

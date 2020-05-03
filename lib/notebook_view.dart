@@ -47,6 +47,7 @@ class notebook_PageState extends State<notebook_Page> {
   var _isLoading = false;
   var daysInThisMonth = 30;
   var nameOfMonth = "";
+  var monthOffset = 0;
 
   Map noteBookMonthData = {};
 
@@ -92,11 +93,14 @@ class notebook_PageState extends State<notebook_Page> {
         _isLoading = true;
       });
       var today = new DateTime.now();
-      daysInThisMonth = monthLength[today.month];
-      nameOfMonth = monthNames[today.month];
+      int month = today.month + monthOffset;
 
-      noteBookMonthData = await user.getNoteBookContentMonth(
-          notebookName, today.year, today.month);
+
+      daysInThisMonth = monthLength[month];
+      nameOfMonth = monthNames[month];
+
+      noteBookMonthData = await user.getNoteBookContentMonth(notebookName,today.year,month);
+
       print(noteBookMonthData);
       setState(() {});
       hasLoaded = true;
@@ -112,9 +116,33 @@ class notebook_PageState extends State<notebook_Page> {
     return data;
   }
 
-  Color getCardColor(String name, String value) {
-    if (name == "Exercise") {
-      if (value == "") {
+  void changeMonthView(int change){
+
+    monthOffset = monthOffset + change;
+
+    var today = new DateTime.now();
+    int month = today.month + monthOffset;
+
+    if(month == 0){
+      monthOffset++;
+      return;
+    }
+    if(month == 13){
+      monthOffset--;
+      return;
+    }
+
+    hasLoaded = false;
+
+    print("changing month!");
+    loadMonthNotebookData();
+  }
+
+  Color getCardColor(String name, String value){
+
+    if(name == "Exercise"){
+      if(value == ""){
+
         return Colors.white;
       }
       if (int.parse(value) >= 20) {
@@ -206,16 +234,96 @@ class notebook_PageState extends State<notebook_Page> {
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
           },
-          child: LoadingOverlay(
-            child: TabBarView(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        "images/grey.jpg",
-                      ),
-                      fit: BoxFit.cover,
+
+          child: LoadingOverlay( 
+          child: TabBarView(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    "images/grey.jpg",
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  paddingA,
+                  Row(
+                    children: <Widget>[
+                       IconButton(
+                          icon: Icon(Icons.arrow_left),
+                          onPressed: () {
+                              changeMonthView(-1);
+                          },
+                       ),
+                       Expanded(
+                        child: Column( 
+                          children: <Widget>[ 
+                              Text("${nameOfMonth}",
+                                  textAlign: TextAlign.left,
+                                  style: new TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black)),
+                              Text("${args.name}",
+                                  textAlign: TextAlign.left,
+                                  style: new TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),                             
+                              ]),
+
+                            ),
+                       IconButton(
+                          icon: Icon(Icons.arrow_right),
+                          onPressed: () {
+                              changeMonthView(1);
+                          },
+                       ),
+                    ],
+                  ),
+        
+                  paddingA,
+                  new Expanded(
+                    child: GridView.count(
+                      primary: false,
+
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      // Create a grid with 2 columns. If you change the scrollDirection to
+                      // horizontal, this produces 2 rows.
+                      crossAxisCount: 7,
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 0,
+                      childAspectRatio: .5,
+                      // Generate 100 widgets that display their index in the List.
+                      children: List.generate(daysInThisMonth, (index) {
+                        return Card(
+                          elevation: 1,
+                          color: getCardColor(notebookName,'${getDayData(index)}'),
+                          child: ListTile(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: 0.0),
+                            onTap: () {
+                              setState(() {
+                                //_id = Index; //if you want to assign the index somewhere to check
+                                //print(_id);
+                              });
+                            },
+
+                            title: Text(' ${index+1}', style: new TextStyle(fontSize: 10,color: Colors.grey)),
+                            subtitle: Text(
+                               '${getDayData(index)}',
+                                textAlign: TextAlign.center,
+                                style: new TextStyle(fontSize: 25,color: Colors.black)
+                            ),
+                          ),
+                        );
+                      }),
                     ),
                   ),
                   padding: const EdgeInsets.all(10.0),
