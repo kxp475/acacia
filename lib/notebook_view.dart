@@ -9,6 +9,9 @@ import 'signin_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
+import 'barGraph.dart';                                                                                                                 
+import 'barGraphPage.dart';
+
 String username = "";
 
 class notebook_Page extends StatefulWidget {
@@ -365,17 +368,9 @@ class notebook_PageState extends State<notebook_Page> {
             ),
             Container(
               padding: const EdgeInsets.all(30.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(" Insights",
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
-                ],
-              ),
+              child: PageView(
+                      children: <Widget>[BarChartPage()],
+             )),
             ),
           ],
 
