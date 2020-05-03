@@ -82,7 +82,6 @@ class userData {
     });
 
     createNotebookArray(name);
-
   }
 
   void deleteNoteBook(String name) async {
@@ -99,12 +98,12 @@ class userData {
       'notebooks': notebooks,
     });
 
-     await databaseReference
+    await databaseReference
         .collection("users")
         .document('${this.getUsername()}')
         .updateData({
-      		'$name': null,
-    	});
+      '$name': null,
+    });
   }
 
   void createDocumentforUser() async {
@@ -117,91 +116,85 @@ class userData {
     });
   }
 
-  Map<String, Map<String,Map<String,String>>>  generateNotebookMap(){
-  	//create an empty notebook map
-  	var today = new DateTime.now();
+  Map<String, Map<String, Map<String, String>>> generateNotebookMap() {
+    //create an empty notebook map
+    var today = new DateTime.now();
 
-	Map<String, Map<String,Map<String,String>>> map = {
-	  		'${today.year}': {
-	  		},
-	};
+    Map<String, Map<String, Map<String, String>>> map = {
+      '${today.year}': {},
+    };
 
-	for( var i = 1 ; i <= 12; i++ ) { 
-		map['${today.year}']['$i'] = {};
-		for(var d = 1; d <= 31; d ++){
-			map['${today.year}']['$i']['$d'] = "";
-		}
-	}
+    for (var i = 1; i <= 12; i++) {
+      map['${today.year}']['$i'] = {};
+      for (var d = 1; d <= 31; d++) {
+        map['${today.year}']['$i']['$d'] = "";
+      }
+    }
 
-	return map;
-
+    return map;
   }
 
   void createNotebookArray(String notebook) async {
-  	
-  	 Map<String, Map<String,Map<String,String>>>  map = generateNotebookMap();
+    Map<String, Map<String, Map<String, String>>> map = generateNotebookMap();
 
     print("Creating a notebook array for exercise for ${this.getUsername()}");
     await databaseReference
         .collection("users")
         .document('${this.getUsername()}')
         .updateData({
-      		'$notebook': map,
-    	});
-
+      '$notebook': map,
+    });
   }
 
-   Future<Map> getNoteBookContent(String notebook) async{
-	  	Map<String, dynamic>  data;
-	  	var today = new DateTime.now();
+  Future<Map> getNoteBookContent(String notebook) async {
+    Map<String, dynamic> data;
+    var today = new DateTime.now();
 
-	  	print("getting notebook content");
+    print("getting notebook content");
 
-	    await databaseReference
-	        .collection('users')
-	        .document('${this.getUsername()}')
-	        .get()
-	        .then((DocumentSnapshot ds) {
-	         print(ds);
-	      	Map<String, dynamic>  map = ds.data;
-	      	data = ds.data;
-	    });
+    await databaseReference
+        .collection('users')
+        .document('${this.getUsername()}')
+        .get()
+        .then((DocumentSnapshot ds) {
+      print(ds);
+      Map<String, dynamic> map = ds.data;
+      data = ds.data;
+    });
 
-	     return data['$notebook'];
+    return data['$notebook'];
   }
 
-  Future<Map> getNoteBookContentMonth(String notebook,int year,int month) async{
-	  	Map<String, dynamic>  data;
-	  	var today = new DateTime.now();
+  Future<Map> getNoteBookContentMonth(
+      String notebook, int year, int month) async {
+    Map<String, dynamic> data;
+    var today = new DateTime.now();
 
-	  	print("getting notebook content");
+    print("getting notebook content");
 
-	    await databaseReference
-	        .collection('users')
-	        .document('${this.getUsername()}')
-	        .get()
-	        .then((DocumentSnapshot ds) {
-	         print(ds);
-	      	Map<String, dynamic>  map = ds.data;
-	      	data = ds.data;
-	    });
+    await databaseReference
+        .collection('users')
+        .document('${this.getUsername()}')
+        .get()
+        .then((DocumentSnapshot ds) {
+      print(ds);
+      Map<String, dynamic> map = ds.data;
+      data = ds.data;
+    });
 
-	     return data['$notebook']['$year']['$month'];
+    return data['$notebook']['$year']['$month'];
   }
 
-  void updateNotebookData(String notebook,int year,int month,int day,String value) async{
-  		Map currentNotebook = await getNoteBookContent(notebook);
-  		currentNotebook['$year']['$month']['$day'] = value;
+  void updateNotebookData(
+      String notebook, int year, int month, int day, String value) async {
+    Map currentNotebook = await getNoteBookContent(notebook);
+    currentNotebook['$year']['$month']['$day'] = value;
 
-  		await databaseReference
+    await databaseReference
         .collection("users")
         .document('${this.getUsername()}')
         .updateData({
-      		'$notebook': currentNotebook,
-    	});
-
+      '$notebook': currentNotebook,
+    });
   }
-
-
-
 }
