@@ -265,28 +265,37 @@ class BarChartSample1State extends State<BarChartSample1> {
     return weekData;
   }
 
+  double getDayDataFromWeek(weekData,int x){
+      if(weekData[x] == "" || weekData[x] == null){
+        return 0.0;
+      }
+      print('Day: $x : ${weekData[x]}');
+      return double.parse(weekData[x]);
+
+  }
+
   List<BarChartGroupData> showingGroups(weekData) => List.generate(7, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, double.parse(weekData[0]),
+            return makeGroupData(0, getDayDataFromWeek(weekData,i),
                 isTouched: i == touchedIndex);
           case 1:
-            return makeGroupData(1, double.parse(weekData[1]),
+            return makeGroupData(1, getDayDataFromWeek(weekData,i),
                 isTouched: i == touchedIndex);
           case 2:
-            return makeGroupData(2, double.parse(weekData[2]),
+            return makeGroupData(2, getDayDataFromWeek(weekData,i),
                 isTouched: i == touchedIndex);
           case 3:
-            return makeGroupData(3, double.parse(weekData[3]),
+            return makeGroupData(3, getDayDataFromWeek(weekData,i),
                 isTouched: i == touchedIndex);
           case 4:
-            return makeGroupData(4, double.parse(weekData[4]),
+            return makeGroupData(4, getDayDataFromWeek(weekData,i),
                 isTouched: i == touchedIndex);
           case 5:
-            return makeGroupData(5, double.parse(weekData[5]),
+            return makeGroupData(5, getDayDataFromWeek(weekData,i),
                 isTouched: i == touchedIndex);
           case 6:
-            return makeGroupData(6, double.parse(weekData[6]),
+            return makeGroupData(6, getDayDataFromWeek(weekData,i),
                 isTouched: i == touchedIndex);
           default:
             return null;
