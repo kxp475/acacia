@@ -368,9 +368,9 @@ class notebook_PageState extends State<notebook_Page> {
             ),
             Container(
               padding: const EdgeInsets.all(30.0),
-              child: PageView(
-                      children: <Widget>[BarChartPage()],
-             )),
+	      child: PageView(
+			      children: <Widget>[BarChartPage()],
+	      ),
             ),
           ],
 
