@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'readLocalProfileData.dart';
 import 'main.dart';
 import 'signin_page.dart';
+import 'package:link/link.dart';
+
 
 String username = "";
 
@@ -72,21 +74,59 @@ class profile_settingsPageState extends State<profile_settingsPage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title:
-            Text('Profile Settings', style: new TextStyle(color: Colors.white)),
+            Text('Settings', style: new TextStyle(color: Colors.white)),
       ),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(30.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('$username',
-                  style: new TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black)),
-              paddingA,
+              
+              Card(
+                  elevation: 3.0,
+                    child: Container(
+                      padding: const EdgeInsets.all(30.0),
+
+                      child: Column(
+
+                            children: <Widget>[
+                                paddingA,
+                                Image.asset(
+                                  'images/logo.png',
+                                  height: 100,
+                                  width: 100,
+                                ),
+                                paddingA,
+                                Text('Account Email:',
+                                    style: new TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black)),
+                                Text('$username',
+                                    style: new TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black)),
+                                paddingA,
+                                Text('You have ${user.noteBookList.length} notebooks.',
+                                    style: new TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black)),
+                                paddingA,
+                                Link(
+                                  child: Text('Enjoy Acacia? Check out my other apps!',textAlign: TextAlign.center),
+                                  url: 'https://apps.apple.com/gd/developer/chase-morell/id1355380953',
+                                  
+                                ),
+                                paddingA,
+                              ],
+                        ),
+                    ),
+                ),
               signoutButton,
+              
             ],
           ),
         ),

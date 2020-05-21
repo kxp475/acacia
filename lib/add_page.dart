@@ -7,6 +7,7 @@ import 'readLocalProfileData.dart';
 import 'main.dart';
 import 'signin_page.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'customPage.dart';
 
 String username = "";
 
@@ -93,6 +94,20 @@ class add_PageState extends State<add_Page> {
         return;
       }
     }
+
+    if("${selectedType.toString().split('.').last}" == "Custom"){
+      print("user wants to create a custom notebook");
+      setState(() {
+          visible = false;
+      });
+      Navigator.push(
+      context,
+        MaterialPageRoute(builder: (context) => custom_Page()),
+      );
+      return;
+      
+    }
+
     await user.initiateNoteBook("${selectedType.toString().split('.').last}");
     await user.getNoteBookList();
 
@@ -108,7 +123,7 @@ class add_PageState extends State<add_Page> {
     final paddingA = Padding(padding: EdgeInsets.only(top: 25.0));
 
     final createButton = Material(
-      elevation: 5.0,
+      elevation: 0,
       borderRadius: BorderRadius.circular(30.0),
       color: Colors.cyan,
       child: MaterialButton(
@@ -132,63 +147,85 @@ class add_PageState extends State<add_Page> {
         child: Container(
           padding: const EdgeInsets.all(30.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
             children: <Widget>[
-              paddingA,
-              paddingA,
-              Text('What do you want to track?',
-                  style: new TextStyle(fontSize: 20, color: Colors.black)),
-              ListTile(
-                title: const Text('Water Intake'),
-                leading: Radio(
-                  value: pageType.Water,
-                  groupValue: selectedType,
-                  onChanged: (pageType value) {
-                    setState(() {
-                      selectedType = value;
-                    });
-                  },
+              
+              Card(
+                elevation: 3.0,
+                //padding: const EdgeInsets.all(10.0),
+                
+                child: Column(
+                  children: <Widget>[
+                    paddingA,
+                    Image.asset(
+                      'images/logo.png',
+                       height: 50,
+                        width: 50,
+                    ),
+                    paddingA,
+                    Text('What do you want to track?',
+                        style: new TextStyle(fontSize: 20, color: Colors.black)),
+                    paddingA,
+                    ListTile(
+                      title: const Text('Water Intake'),
+                      leading: Radio(
+                        value: pageType.Water,
+                        groupValue: selectedType,
+                        onChanged: (pageType value) {
+                          setState(() {
+                            selectedType = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('Exercise'),
+                      leading: Radio(
+                        value: pageType.Exercise,
+                        groupValue: selectedType,
+                        onChanged: (pageType value) {
+                          setState(() {
+                            selectedType = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('Sleep'),
+                      leading: Radio(
+                        value: pageType.Sleep,
+                        groupValue: selectedType,
+                        onChanged: (pageType value) {
+                          setState(() {
+                            selectedType = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('Custom'),
+                      leading: Radio(
+                        value: pageType.Custom,
+                        groupValue: selectedType,
+                        onChanged: (pageType value) {
+                          setState(() {
+                            print("custom selected");
+                            selectedType = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              ListTile(
-                title: const Text('Exercise'),
-                leading: Radio(
-                  value: pageType.Exercise,
-                  groupValue: selectedType,
-                  onChanged: (pageType value) {
-                    setState(() {
-                      selectedType = value;
-                    });
-                  },
-                ),
-              ),
-              ListTile(
-                title: const Text('Sleep'),
-                leading: Radio(
-                  value: pageType.Sleep,
-                  groupValue: selectedType,
-                  onChanged: (pageType value) {
-                    setState(() {
-                      selectedType = value;
-                    });
-                  },
-                ),
-              ),
-              ListTile(
-                title: const Text('Custom'),
-                leading: Radio(
-                  value: pageType.Custom,
-                  groupValue: selectedType,
-                  onChanged: (pageType value) {
-                    setState(() {
-                      selectedType = value;
-                    });
-                  },
-                ),
-              ),
+
               paddingA,
               createButton,
             ],
           ),
+
+        
         ),
 
         isLoading: visible,

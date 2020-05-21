@@ -202,6 +202,38 @@ class userData {
 
   }
 
+    void updateGoal(String notebook,int value) async{
+      Map currentNotebook = await getNoteBookContent(notebook);
+      currentNotebook['goal'] = value;
+
+      await databaseReference
+        .collection("users")
+        .document('${this.getUsername()}')
+        .updateData({
+          '$notebook': currentNotebook,
+      });
+
+  }
+
+  Future<int> getGoal(String notebook) async{
+      Map<String, dynamic>  data;
+      var today = new DateTime.now();
+
+      print("getting notebook content");
+
+      await databaseReference
+          .collection('users')
+          .document('${this.getUsername()}')
+          .get()
+          .then((DocumentSnapshot ds) {
+           print(ds);
+          Map<String, dynamic>  map = ds.data;
+          data = ds.data;
+      });
+
+       return data['$notebook']['goal'];
+  }
+
 
 
 }

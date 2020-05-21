@@ -86,9 +86,9 @@ class loginPageState extends State<loginPage> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final loginButton = Material(
-      elevation: 5.0,
+      //elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
+      color: Colors.cyan,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),

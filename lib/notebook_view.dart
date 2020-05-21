@@ -26,7 +26,7 @@ class notebook_PageState extends State<notebook_Page> {
 
   static const routeName = '/notebook_Page';
 
-  final noteBookUnitType = {'Water':'glasses','Sleep':'hours','Exercise':'minutes','Custom':'custom'};
+  final noteBookUnitType = {'Water':'glasses','Sleep':'hours','Exercise':'minutes','Custom':''};
   final noteBookUnitePhrase = {'Water':'Number of Glasses Drank','Sleep':'Hours You Slept','Exercise':'Minutes You Exercised','Custom':"Custom Data"};
 
 
@@ -41,6 +41,8 @@ class notebook_PageState extends State<notebook_Page> {
   var daysInThisMonth = 30;
   var nameOfMonth = "";
   var monthOffset = 0;
+  var updateValue = "0";
+  int goal;
 
   Map noteBookMonthData = {};
 
@@ -66,7 +68,10 @@ class notebook_PageState extends State<notebook_Page> {
       daysInThisMonth = monthLength[month];
       nameOfMonth = monthNames[month];
 
+
       noteBookMonthData = await user.getNoteBookContentMonth(notebookName,today.year,month);
+
+      goal = await user.getGoal(notebookName);
       print(noteBookMonthData);
       setState((){});
       hasLoaded = true;
@@ -82,6 +87,8 @@ class notebook_PageState extends State<notebook_Page> {
     return data;
 
   }
+
+
 
   void changeMonthView(int change){
 
@@ -107,58 +114,194 @@ class notebook_PageState extends State<notebook_Page> {
 
   Color getCardColor(String name, String value){
 
-    if(name == "Exercise"){
+      int g = goal ?? 0;
+
       if(value == ""){
         return Colors.white;
       }
-      if(int.parse(value) >= 20){
+      if(int.parse(value) >= g){
          return Colors.green;
       }else{
         return Colors.red;
       }
-    }
-
-    if(name == "Sleep"){
-      if(value == ""){
-        return Colors.white;
-      }
-      if(int.parse(value) >= 7){
-         return Colors.green;
-      }else{
-        return Colors.red;
-      }
-    }
-
-    if(name == "Water"){
-      if(value == ""){
-        return Colors.white;
-      }
-      if(int.parse(value) >= 5){
-         return Colors.green;
-      }else{
-        return Colors.red;
-      }
-    }
-
 
     return Colors.white;
   }
 
   String getNoteBookBackGroundImageFile(){
-    Map bgFiles = {"Exercise" : "images/exerciseCentered.jpg","Sleep" : "images/sky.jpg","Water" : "images/water.jpg","Custom" : "images/treeBlurred.jpg"};
+    Map bgFiles = {"Exercise" : "images/exerciseCentered.jpg","Sleep" : "images/sky.jpg","Water" : "images/water.jpg","Custom" : "images/treeLogin.jpg"};
+    if(bgFiles[notebookName] == null){
+      return bgFiles["Custom"];
+    }
     return bgFiles[notebookName];
   }
 
+  String getNoteBookPhrase(){
+    if(noteBookUnitePhrase[notebookName] == null){
+      return notebookName;
+    }
+    return noteBookUnitePhrase[notebookName];
+  }
+
+  int getGoal(){
+    if(goal == null){
+      return 0;
+    }
+    return goal;
+  }
+
   void onSubmitDataButtomPressed()async{
-       var today = new DateTime.now();
+       //inputData = "Test";
+       int defaultValue = -3;
+       int data =  int.tryParse(inputData) ?? defaultValue;
 
-       await user.updateNotebookData("$notebookName",today.year,today.month,today.day,inputData);
+       if(data == defaultValue){
+             showDialog<void>(
+              context: context,
+              barrierDismissible: false, // user must tap button!
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(
+                      'You must input a number'),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text('Please try again'),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Ok'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        setState((){
+                          _isLoading = false;
+                          hasLoaded = false;
+                        });
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+       }else{
 
-       setState((){
+        var today = new DateTime.now();
+
+        await user.updateNotebookData("$notebookName",today.year,today.month,today.day,'$data');
+
+        setState((){
           _isLoading = false;
           hasLoaded = false;
         });
+
+       }  
   }
+
+  void onEditDaySubmit(int day,String updatedData)async{
+       //inputData = "Test";
+       int defaultValue = -3;
+       int data =  int.tryParse(updatedData) ?? defaultValue;
+
+        var today = new DateTime.now();
+
+        await user.updateNotebookData("$notebookName",today.year,today.month + monthOffset,day,'$data');
+
+        setState((){
+          _isLoading = false;
+          hasLoaded = false;
+        });
+
+       
+  }
+
+  void onEditGoalSubmit(String updatedData)async{
+       //inputData = "Test";
+       int defaultValue = 0;
+       int data =  int.tryParse(updatedData) ?? defaultValue;
+
+
+        await user.updateGoal("$notebookName",data);
+
+        setState((){
+          _isLoading = false;
+          hasLoaded = false;
+        });
+
+       
+  }
+
+  displayEditDayDialog(BuildContext context,int day) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Edit Data for ${nameOfMonth}-${day+1}'),
+            content: TextField(
+              keyboardType: TextInputType.number,
+              //controller: _textFieldController,
+                onChanged: (text) {
+                  updateValue = text;
+                  
+                },
+              
+              decoration: InputDecoration(hintText: "Enter Data"),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('CANCEL'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text('SUBMIT'),
+                onPressed: () {
+                  onEditDaySubmit(day+1,"$updateValue");
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  displayEditGoalDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Edit Daily Goal for $notebookName'),
+            content: TextField(
+              keyboardType: TextInputType.number,
+              //controller: _textFieldController,
+                onChanged: (text) {
+                  updateValue = text;
+                  
+                },
+              
+              decoration: InputDecoration(hintText: "Enter Goal : ${noteBookUnitType[notebookName]}"),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text('CANCEL'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text('SUBMIT'),
+                onPressed: () {
+                  onEditGoalSubmit("$updateValue");
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +337,7 @@ class notebook_PageState extends State<notebook_Page> {
         ),
         body: GestureDetector( 
           onTap: () {
+            print("tapped!");
             FocusScope.of(context).requestFocus(new FocusNode());
           },
           child: LoadingOverlay( 
@@ -270,13 +414,15 @@ class notebook_PageState extends State<notebook_Page> {
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 0.0, horizontal: 0.0),
                             onTap: () {
+                              print("Touched a day!");
+                              displayEditDayDialog(context,index);
                               setState(() {
                                 //_id = Index; //if you want to assign the index somewhere to check
                                 //print(_id);
                               });
                             },
 
-                            title: Text(' ${index+1}', style: new TextStyle(fontSize: 10,color: Colors.grey)),
+                            title: Text(' ${index+1}', style: new TextStyle(fontSize: 10,color: Colors.black)),
                             subtitle: Text(
                                '${getDayData(index)}',
                                 textAlign: TextAlign.center,
@@ -309,7 +455,7 @@ class notebook_PageState extends State<notebook_Page> {
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                           color: Colors.white)),
-                  Text("${noteBookUnitePhrase[args.name]}",
+                  Text("${getNoteBookPhrase()}",
                       textAlign: TextAlign.left,
                       style: new TextStyle(
                           fontSize: 25,
@@ -322,7 +468,7 @@ class notebook_PageState extends State<notebook_Page> {
                       style: new TextStyle(fontSize: 20.0,color: Colors.black),
                       decoration: new InputDecoration(labelText: "Enter Data for ${today.month}/${today.day}",filled: true,
 
-                  fillColor: Colors.white,),
+                    fillColor: Colors.white,),
                       keyboardType: TextInputType.number,
                       onChanged: (text) {
                         inputData = text;
@@ -336,8 +482,35 @@ class notebook_PageState extends State<notebook_Page> {
                           });
                         }
                         print("First text field: $text");
-                      },),
+                  },),
                   paddingA,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Daily goal: \n ${getGoal()} ${noteBookUnitType[notebookName] ?? ""} ",
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white)),
+                      
+                      GestureDetector(
+                        onTap: () {
+                          displayEditGoalDialog(context);
+                          print("Edit Goal Button Pressed");
+                        },
+                        child: Icon(Icons.mode_edit, color: Colors.white),
+                      ),
+
+                    ],
+
+                  ),
+                  /* Text("Your daily goal is: 5 ${noteBookUnitType[notebookName]} ",
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white)), */
                   paddingA,
                   Visibility(
                       visible: isSubmitDataButtonVisible,
@@ -368,9 +541,10 @@ class notebook_PageState extends State<notebook_Page> {
             ),
             Container(
               padding: const EdgeInsets.all(30.0),
-	      child: PageView(
-			      children: <Widget>[BarChartPage()],
-	      ),
+      	      child: PageView(
+      			      children: <Widget>[BarChartPage()],
+      	      ),
+
             ),
           ],
 

@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.cyan,
+       // fontFamily: 'Heiti',
       ),
       routes: {
         notebook_Page.routeName: (context) => notebook_Page(),
@@ -156,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      _title = "Acacia";
+      _title = "acacia";
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
@@ -190,8 +191,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Icon getIconForNotebook(String notebookName){
-    Map<String, Icon> icons = {"Exercise" : Icon(Icons.directions_run), "Sleep" : Icon(Icons.local_hotel), "Water" : Icon(Icons.local_drink), "Custom" : Icon(Icons.looks)};
+    Map<String, Icon> icons = {"Exercise" : Icon(Icons.directions_run, color: Colors.white,size: 30.0), "Sleep" : Icon(Icons.local_hotel, color: Colors.white,size: 30.0), "Water" : Icon(Icons.local_drink, color: Colors.white,size: 30.0), "Custom" : Icon(Icons.looks, color: Colors.white,size: 30.0)};
+    if(icons[notebookName] == null){
+      return icons["Custom"];
+    }
     return icons[notebookName];
+  }
+
+  String getNoteBookBackGroundImageFile(String notebookName){
+    Map bgFiles = {"Exercise" : "images/exerciseCentered.jpg","Sleep" : "images/sky.jpg","Water" : "images/water.jpg","Custom" : "images/treeLogin.jpg"};
+    if(bgFiles[notebookName] == null){
+      return bgFiles["Custom"];
+    }
+    return bgFiles[notebookName];
   }
 
   @override
@@ -281,11 +293,15 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text('$_title',
-              style: Theme.of(context)
-                  .textTheme
-                  .display1
-                  .copyWith(color: Colors.white)),
+          title: Image.asset(
+                'images/logoText.png',
+                height: 150,
+                width: 150,
+              ),//Text('$_title',
+             // style: Theme.of(context)
+             //     .textTheme
+             //     .display1
+             //     .copyWith(color: Colors.white)),
           actions: [
             GestureDetector(
               onTap: () {
@@ -313,14 +329,17 @@ class _MyHomePageState extends State<MyHomePage> {
             // Center is a layout widget. It takes a single child and positions it
             // in the middle of the parent.
             child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
+               decoration: BoxDecoration(
+               color: Colors.grey[200],
+               
+                /*image: DecorationImage(
                   image: AssetImage(
-                    "images/treeBlurred.jpg",
+                    "images/grey.jpg",
                   ),
                   fit: BoxFit.cover,
-                ),
-              ),
+                ), */
+                
+              ), 
               padding: const EdgeInsets.symmetric(horizontal: 0.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -341,9 +360,78 @@ class _MyHomePageState extends State<MyHomePage> {
                                 // Then show a snackbar.
                               },
                               child: Container(
+
                                 padding: const EdgeInsets.only(
-                                    top: 20.0, left: 30.0, right: 30.0),
-                                child: Card(
+                                    top: 30.0, left: 10.0, right: 10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                      setState(() {
+                                        _id =
+                                            Index; //if you want to assign the index somewhere to check
+                                        print(_id);
+                                        print(user.noteBookList.elementAt(_id));
+                                        Navigator.pushNamed(
+                                          context,
+                                          notebook_Page.routeName,
+                                          arguments: notebookArgs(
+                                            user.noteBookList.elementAt(_id),
+                                            'This is some more info',
+                                          ),
+                                        );
+                                      });
+                                    },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[850],
+                                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                                      //clipBehavior: hardEdge,
+
+                                    ),
+                                    //color: Colors.white,
+                                    padding: const EdgeInsets.only(top: 30.0, bottom: 0.0,left:0,right:0),
+                                    child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start ,
+
+                                        children: <Widget>[
+                                          Container(
+                                            padding: const EdgeInsets.only(top: 0, bottom: 0.0,left:20,right:20),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text("${user.noteBookList[Index]}", style: new TextStyle( fontSize: 25, fontWeight: FontWeight.normal,color: Colors.white)),
+                                                getIconForNotebook(user.noteBookList.elementAt(Index)),
+                                              ],
+
+                                            ),
+                                          ),
+
+                                          Padding(padding: EdgeInsets.only(top: 25.0)),
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                              
+                                              bottomRight: Radius.circular(20.0),
+                                              bottomLeft: Radius.circular(20.0),
+
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment.bottomRight,
+                                              heightFactor: .4,
+                                              widthFactor: 1,
+                                              child: Image.asset(
+                                                '${getNoteBookBackGroundImageFile(user.noteBookList.elementAt(Index))}',
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+
+
+                                        ],
+                                      ),
+
+                                  ),
+                                ),
+
+                                /* Card(
                                   elevation: 1,
                                   child: ListTile(
                                     contentPadding: EdgeInsets.symmetric(
@@ -367,9 +455,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     leading: getIconForNotebook(user.noteBookList.elementAt(Index)),//Icon(Icons.directions_run),
                                     //trailing: Icon( Icons.settings),
                                     title: Text(user.noteBookList[Index],
-                                        style: new TextStyle(fontSize: 20)),
+                                        style: new TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                                   ),
-                                ),
+                                ), */
                               ),
                             );
                           })),
