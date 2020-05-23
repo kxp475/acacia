@@ -80,7 +80,7 @@ class profile_settingsPageState extends State<profile_settingsPage> {
         child: Container(
           padding: const EdgeInsets.all(30.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               
               Card(
@@ -89,15 +89,15 @@ class profile_settingsPageState extends State<profile_settingsPage> {
                       padding: const EdgeInsets.all(30.0),
 
                       child: Column(
-
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                                paddingA,
+                                //paddingA,
                                 Image.asset(
                                   'images/logo.png',
                                   height: 100,
                                   width: 100,
                                 ),
-                                paddingA,
+                                //paddingA,
                                 Text('Account Email:',
                                     style: new TextStyle(
                                         fontSize: 20,
@@ -108,7 +108,7 @@ class profile_settingsPageState extends State<profile_settingsPage> {
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black)),
-                                paddingA,
+                                //paddingA,
                                 Text('You have ${user.noteBookList.length} notebooks.',
                                     style: new TextStyle(
                                         fontSize: 20,
@@ -120,7 +120,7 @@ class profile_settingsPageState extends State<profile_settingsPage> {
                                   url: 'https://apps.apple.com/gd/developer/chase-morell/id1355380953',
                                   
                                 ),
-                                paddingA,
+                                //paddingA,
                               ],
                         ),
                     ),

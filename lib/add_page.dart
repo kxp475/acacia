@@ -147,7 +147,7 @@ class add_PageState extends State<add_Page> {
         child: Container(
           padding: const EdgeInsets.all(30.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
 
             children: <Widget>[
               
